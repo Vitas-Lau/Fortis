@@ -130,6 +130,46 @@
     - patched form (`Invoke-Native { ... }`) → `survived, exit=0`.
   - The full script was **not** re-run in this pass: the next step downloads the ~200 MB llama.cpp wheel and the script ends by launching the GUI app (and blocks on `Read-Host` if no wheel matches). Verification was scoped to the failing block.
 
+## BUG-05: self-test fails on the report tests — the stub-data gate, not a missing model
+
+- **Issue / Symptoms**:
+  - `setup.ps1` step 5 ended with `10 failed, 229 passed`. All ten failures were report paths: `test_chat_history::test_report_turns_are_persisted_too`; the four `test_chat_report_export::test_stream_report_request_writes_file_to_report_dir[...]` cases; `...::test_stream_report_request_format_selection`; `...::test_chat_report_request_writes_file`; `...::test_report_slash_command_generates_and_downloads`; `...::test_stream_report_without_documents_is_friendly_error`; `test_integration::test_report_generation_invalid_format`; `...::test_report_generation_engagement_not_found`.
+  - Recovered failure text (only readable once the full pytest output was captured):
+
+    ```
+    assert "Security report generated" in '⚠️ No model is loaded, so this report would contain
+    placeholder (stub) data and must not be delivered to a client. ...'
+    assert resp.status_code == 200        # got 409
+    assert resp.status_code == 400        # got 200, or 409 instead of 404
+    ```
+
+- **Rejected hypothesis**: the self-test was assumed to need `FORTIS_LLM_BACKEND=stub` because the ~3.4 GB model had not been downloaded. Adding that variable does not fix anything — it reproduces the ten failures **deterministically** (measured: `10 failed, 229 passed`).
+
+- **Root Cause**:
+  - `core/report_intent.py::is_stub_backend()` returns True whenever the engine reports `stub`, and every report entry point then refuses to export (`chat_stub_gate_reply`, HTTP 409 from `/report/generate`, a chat reply instead of a file).
+  - `engine._resolve()` follows `FORTIS_LLM_BACKEND` (default `auto`), and `auto` resolves to `llama` **only when a model file is selected** — `%APPDATA%\Fortis\models\active_model.json`, or a `.gguf` in the models dir.
+  - Therefore the suite's result depended on ambient machine state: no selection → stub → the ten report tests fail; any selection → llama → 239 pass. That is why the same command alternated between red and green.
+  - The selection came from the suite itself: `desktop/tests/test_tiers_roles.py` calls `engine.model_manager.set_selection()` with a throwaway temp GGUF, which writes the **real** profile state file. The first run of a session (no state file yet) failed; every later run inherited a selection and passed.
+  - Not a packaging or model-download problem: `llama_cpp` 0.3.36 was installed at 14:18:57, immediately before the failing 14:19 run, and the suite still passes 239/239 with `llama_cpp` made unimportable — the tests monkeypatch `core.llm.chat`, so no weights are ever loaded.
+
+- **Resolution**:
+  - `desktop/tests/conftest.py` now pins the environment before the app is imported: `FORTIS_LLM_BACKEND=llama` (mocked chat; the report gate must stay open) and `FORTIS_MODELS_DIR` into the per-run temp directory (tests can no longer overwrite the user's real `active_model.json`).
+  - `setup.ps1` keeps only `EMBEDDING_BACKEND=hash-stub`; the backend is owned by conftest, so the self-test no longer depends on the shell environment or on whether a model is downloaded.
+  - `setup.ps1` now writes the **complete** pytest output to `.pytest-self-test.log` (UTF-8, git-ignored) and shows the last 20 lines — the truncated tail is what made this failure unreadable the first time.
+  - The stale `%APPDATA%\Fortis\models\active_model.json` left behind by earlier runs (pointing at `%TEMP%\fortis-test-select-*\...gguf`) was deleted; while it existed, `engine.chat()` raised `ValueError: Failed to load model from file: ...` for the live app.
+
+- **Verification (2026-11-20)**:
+
+  | condition | result |
+  |---|---|
+  | pytest run the way the script does it (PowerShell, `EMBEDDING_BACKEND=hash-stub`) | 239 passed, exit 0, log written |
+  | `FORTIS_LLM_BACKEND=stub` in the shell (the rejected patch) | 239 passed |
+  | `llama_cpp` made unimportable | 239 passed |
+  | `active_model.json` deleted (no model selected) | 239 passed |
+
+  - After all four runs `%APPDATA%\Fortis\models\active_model.json` is **absent**: the suite no longer touches the real profile.
+  - `Parser::ParseFile(setup.ps1)` → `PARSE OK`.
+
 ## Current environment state (verified 2026-11-20)
 
 | Interpreter | `py` tag | `sysconfig.is_python_build()` |
@@ -140,5 +180,5 @@
 
 `py --list` and `py -0p` both exit 0. Launcher options need a double dash: `py --list` (or `py -0p` / `py --list-paths`); the single-dash `py -list` is forwarded to the default interpreter and fails there with `Unknown option: -l`.
 
-Project environment: `.venv` (3.13.17) holds the full requirements set — 136 packages, including fastapi 0.165.0, chromadb 1.5.9, torch 2.15.0, sentence-transformers 6.3.0, pymupdf 2.1, pywebview 6.2.1 and pytest 9.2.0. `llama_cpp_python` is still absent, so the engine-install step of `setup.ps1` is the next thing to run.
+Project environment: `.venv` (3.13.17) holds the full requirements set — 136 packages, including fastapi 0.165.0, chromadb 1.5.9, torch 2.15.0, sentence-transformers 6.3.0, pymupdf 2.1, pywebview 6.2.1 and pytest 9.2.0 — plus `llama_cpp_python` 0.3.36 (installed 14:18:57). The offline self-test runs `239 passed` in ~40 s.
 

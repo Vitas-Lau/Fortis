@@ -26,6 +26,16 @@ import tempfile
 _tmp = tempfile.mkdtemp(prefix="fortis-test-")
 
 os.environ["EMBEDDING_BACKEND"] = "hash-stub"
+# The report pipeline refuses to export while the engine reports itself as
+# "stub" (placeholder-data gate in core/report_intent.py). Tests mock
+# core.llm.chat instead, so pin the llama backend to keep that gate open and
+# make the suite independent of whatever model %APPDATA%\Fortis\models
+# currently points at.
+os.environ["FORTIS_LLM_BACKEND"] = "llama"
+# Keep the model-selection state file out of the real profile: tests call
+# engine.model_manager.set_selection(), which would otherwise overwrite the
+# user's active_model.json with a throwaway temp path.
+os.environ["FORTIS_MODELS_DIR"] = os.path.join(_tmp, "models")
 os.environ["DB_PATH"] = os.path.join(_tmp, "engagements.sqlite3")
 os.environ["CHROMA_PERSIST_DIR"] = os.path.join(_tmp, "chroma")
 os.environ["UPLOAD_DIR"] = os.path.join(_tmp, "uploads")

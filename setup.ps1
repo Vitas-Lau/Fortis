@@ -155,15 +155,22 @@ if ($LASTEXITCODE -ne 0) {
 
 # 5. offline self-test (fast, no model download)
 Write-Host "  [..] Running offline sanity tests..."
+# The LLM backend is pinned inside desktop/tests/conftest.py (the report gate
+# in core/report_intent.py blocks exports whenever the engine reports "stub",
+# and the tests mock core.llm.chat instead of loading a model).
 $env:EMBEDDING_BACKEND = "hash-stub"
-Invoke-Native { & $venvPy -m pytest desktop\tests\ -q --no-header 2>&1 } | Select-Object -Last 15
+# Keep the full pytest output on disk: the console only gets the tail, and a
+# truncated traceback hides the real exception.
+$testLog = Join-Path $PSScriptRoot ".pytest-self-test.log"
+Invoke-Native { & $venvPy -m pytest desktop\tests\ -q --no-header 2>&1 } | Tee-Object -Variable testOut | Select-Object -Last 20
+$testOut | Out-File -FilePath $testLog -Encoding utf8
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "  [X] Self-test failed - see output above" -ForegroundColor Red
+    Write-Host "  [X] Self-test failed - full output: $testLog" -ForegroundColor Red
     Read-Host "  Press Enter to exit"
     exit 1
 }
 Remove-Item Env:EMBEDDING_BACKEND -ErrorAction SilentlyContinue
-Write-Host "  [ok] Self-tests passed"
+Write-Host "  [ok] Self-tests passed (full log: $testLog)"
 
 Write-Host ""
 Write-Host "  Setup complete. Starting Fortis..." -ForegroundColor Green
