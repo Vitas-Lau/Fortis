@@ -88,7 +88,11 @@ if ($LASTEXITCODE -ne 0) {
     }
 
     if (Test-Path "$venvPy") {
-        & $venvPy -m pip uninstall --disable-pip-version-check --yes llama_cpp_python 2>$null | Out-Null
+        # NB: a bare `2>$null` on a native command turns pip's stderr warning
+        # ("Skipping llama_cpp_python as it is not installed.") into a
+        # NativeCommandError, which $ErrorActionPreference = "Stop" makes fatal.
+        # Invoke-Native relaxes the preference for the duration of the call.
+        Invoke-Native { & $venvPy -m pip uninstall --disable-pip-version-check --yes llama_cpp_python 2>$null | Out-Null }
         $LASTEXITCODE = 0
     }
 
@@ -101,7 +105,7 @@ if ($LASTEXITCODE -ne 0) {
             Write-Host "  [ok] Engine installed (GPU-accelerated)"
         } else {
             Write-Host "       CUDA wheel failed to install or import - cleaning up and trying the CPU wheel..."
-            & $venvPy -m pip uninstall --disable-pip-version-check --yes llama_cpp_python 2>$null | Out-Null
+            Invoke-Native { & $venvPy -m pip uninstall --disable-pip-version-check --yes llama_cpp_python 2>$null | Out-Null }
             $LASTEXITCODE = 0
         }
     }
@@ -113,7 +117,7 @@ if ($LASTEXITCODE -ne 0) {
             Write-Host "  [ok] Engine installed (CPU)"
         } else {
             Write-Host "       CPU wheel unavailable - cleaning up and trying PyPI (may build from source)..."
-            & $venvPy -m pip uninstall --disable-pip-version-check --yes llama_cpp_python 2>$null | Out-Null
+            Invoke-Native { & $venvPy -m pip uninstall --disable-pip-version-check --yes llama_cpp_python 2>$null | Out-Null }
             $LASTEXITCODE = 0
         }
     }

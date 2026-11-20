@@ -91,6 +91,45 @@
   - The same block executed in an empty temp directory (venv-creation branch) → created a `.venv` whose interpreter reports `3.13.17`, exit 0.
   - Splat forms exercised directly: `$pyArgs = @()` → `Python 3.11.16` with no error; `$pyArgs = @("-3.13")` → `Python 3.13.17`.
 
+## BUG-04: `setup.ps1` dies at the llama.cpp step — `NativeCommandError` from a pip `WARNING`
+
+- **Issue / Symptoms**:
+  - After the dependency install completed (`[ok] Dependencies installed`), the script printed `[..] Installing the local AI engine (llama.cpp, ~200 MB)...` and then aborted with:
+
+    ```
+    python.exe : WARNING: Skipping llama_cpp_python as it is not installed.
+    位於 ...\setup.ps1:91 字元:9
+    +  & $venvPy -m pip uninstall --disable-pip-version-check --yes ...
+        + CategoryInfo          : NotSpecified: (WARNING: Skippi... not installed.:String) [], RemoteException
+        + FullyQualifiedErrorId : NativeCommandError
+    ```
+
+  - Python and pip were healthy: `pip uninstall` exits 0 and only reports that the package is absent — nothing to clean up, nothing broken.
+
+- **Root Cause**:
+  - Windows PowerShell 5.1 materialises a native program's stderr as `ErrorRecord`s **when stderr is redirected** (`2>$null`, `2>&1`). Unredirected stderr is passed straight to the console and never becomes a PowerShell error. With `$ErrorActionPreference = "Stop"` at the top of the script those records are terminating, so the statement throws `RemoteException` / `NativeCommandError` and the script stops.
+  - The offending statement was the first-run clean-up `& $venvPy -m pip uninstall ... 2>$null | Out-Null`. In a fresh environment the guard `Test-Path "$venvPy"` is true but the package does not exist, so pip writes `WARNING: Skipping llama_cpp_python as it is not installed.` to stderr while still exiting 0.
+  - Proof that the **redirect**, not stderr itself, is the trigger: step 3 runs `pip install -r requirements-dev.txt` **without** redirection and emitted many `WARNING: Cache entry deserialization failed, entry ignored` lines on stderr, yet completed with `[ok] Dependencies installed`.
+  - Controlled matrix (PowerShell 5.1.26100.9711, `$ErrorActionPreference = "Stop"`, command writes one line to stderr and exits 0):
+
+    | form | outcome |
+    |---|---|
+    | `cmd \| Out-Null` (no redirect) | survived, stderr shown on console |
+    | `cmd 2>$null \| Out-Null` | **threw `System.Management.Automation.RemoteException`** |
+    | `Invoke-Native { cmd 2>$null \| Out-Null }` | survived, silent |
+
+- **Resolution**:
+  - Wrapped all three `pip uninstall ... 2>$null` clean-ups (initial clean-up, CUDA→CPU fallback, CPU→PyPI fallback) in the script's existing `Invoke-Native` helper, which sets `$ErrorActionPreference = "Continue"` for the duration of the call; the `2>$null` then only suppresses output.
+  - `$LASTEXITCODE = 0` after each call is kept, so a genuine failure is still handled by the surrounding logic rather than masked.
+  - The two remaining bare `2>$null` calls (`py -3.13 --version` probing) are intentionally left alone: they sit inside `try { } catch { }`, so a `NativeCommandError` there is already handled by design.
+
+- **Verification (2026-11-20)**:
+  - `[System.Management.Automation.Language.Parser]::ParseFile(...)` → `PARSE OK`.
+  - Harness run in the project directory with the real `.venv` interpreter and the real package name (`pip show llama_cpp_python` → not found):
+    - control (old bare form) → `THREW -> System.Management.Automation.RemoteException`, reproducing the reported failure exactly;
+    - patched form (`Invoke-Native { ... }`) → `survived, exit=0`.
+  - The full script was **not** re-run in this pass: the next step downloads the ~200 MB llama.cpp wheel and the script ends by launching the GUI app (and blocks on `Read-Host` if no wheel matches). Verification was scoped to the failing block.
+
 ## Current environment state (verified 2026-11-20)
 
 | Interpreter | `py` tag | `sysconfig.is_python_build()` |
@@ -100,4 +139,6 @@
 | 3.12.10 | `-V:3.12` | False |
 
 `py --list` and `py -0p` both exit 0. Launcher options need a double dash: `py --list` (or `py -0p` / `py --list-paths`); the single-dash `py -list` is forwarded to the default interpreter and fails there with `Unknown option: -l`.
+
+Project environment: `.venv` (3.13.17) holds the full requirements set — 136 packages, including fastapi 0.165.0, chromadb 1.5.9, torch 2.15.0, sentence-transformers 6.3.0, pymupdf 2.1, pywebview 6.2.1 and pytest 9.2.0. `llama_cpp_python` is still absent, so the engine-install step of `setup.ps1` is the next thing to run.
 
