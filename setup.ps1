@@ -13,29 +13,44 @@ Write-Host ""
 Write-Host "  Fortis - Cybersecurity Advisor : setup" -ForegroundColor Cyan
 Write-Host "  ----------------------------------------" -ForegroundColor DarkGray
 
-# 1. Python check
-$py = $null
-foreach ($c in @("python", "py")) {
+# 1. Python check (Lock to verified versions 3.10 - 3.13; avoid 3.14+)
+#    The executable and its launcher args are kept in separate variables:
+#    PowerShell's call operator (&) never splits a string on spaces, so a
+#    combined "py -3.13" token would be looked up as one command name.
+$pyExe = $null
+$pyArgs = @()
+# Priority 1: Check if py launcher has Python 3.13 or 3.12 explicitly
+foreach ($ver in @("-3.13", "-3.12")) {
     try {
-        $v = & $c --version 2>$null
-        if ($v -match "Python 3\.(1[0-4]|[0-9])") { $py = $c; break }
+        $v = & py $ver --version 2>$null
+        if ($v -match "Python 3\.(1[2-3])\.") { $pyExe = "py"; $pyArgs = @($ver); break }
     } catch {}
 }
-if (-not $py) {
+# Priority 2: Fallback to general python/py commands if they match 3.10-3.13
+if (-not $pyExe) {
+    foreach ($c in @("python", "py")) {
+        try {
+            $v = & $c --version 2>$null
+            if ($v -match "Python 3\.(1[0-3])\.") { $pyExe = $c; $pyArgs = @(); break }
+        } catch {}
+    }
+}
+if (-not $pyExe) {
     Write-Host ""
-    Write-Host "  [X] Python 3.10+ not found." -ForegroundColor Red
-    Write-Host "      Install it from https://www.python.org/downloads/" -ForegroundColor Yellow
+    Write-Host "  [X] Compatible Python (3.10 - 3.13) not found." -ForegroundColor Red
+    Write-Host "      Python 3.14+ is currently incompatible due to missing prebuilt wheels." -ForegroundColor Yellow
+    Write-Host "      Please install Python 3.13 from https://www.python.org/downloads/" -ForegroundColor Yellow
     Write-Host "      IMPORTANT: tick 'Add python.exe to PATH' in the installer." -ForegroundColor Yellow
     Read-Host "  Press Enter to exit"
     exit 1
 }
-Write-Host "  [ok] $(& $py --version)"
+Write-Host "  [ok] $(& $pyExe @pyArgs --version)"
 
 # 2. venv
 Set-Location $PSScriptRoot
 if (-not (Test-Path ".venv\Scripts\python.exe")) {
     Write-Host "  [..] Creating virtual environment (one-time)..."
-    & $py -m venv .venv
+    & $pyExe @pyArgs -m venv .venv
     if ($LASTEXITCODE -ne 0) { Write-Host "  [X] venv creation failed" -ForegroundColor Red; Read-Host "  Press Enter to exit"; exit 1 }
 } else {
     Write-Host "  [ok] Virtual environment exists"
@@ -120,11 +135,11 @@ if ($LASTEXITCODE -ne 0) {
         if ($ok) {
             Write-Host "  [ok] Engine installed (CPU, built from source)"
         } else {
-            Write-Host "  [X] No prebuilt llama-cpp-python wheel for $(& $py --version) on this system." -ForegroundColor Red
-            Write-Host "      Options:" -ForegroundColor Yellow
-            Write-Host "        1. Install Python 3.13 (has prebuilt wheels) and rerun setup." -ForegroundColor Yellow
-            Write-Host "        2. Install Visual Studio Build Tools (Desktop development with C++) and rerun." -ForegroundColor Yellow
-            Write-Host "        3. Use the community Windows wheel collection (cp314) from: llama-cpp-wheels on Hugging Face." -ForegroundColor Yellow
+            Write-Host "  [X] No prebuilt llama-cpp-python wheel for $(& $pyExe @pyArgs --version) on this system." -ForegroundColor Red
+			Write-Host "      Options:" -ForegroundColor Yellow
+			Write-Host "        1. Switch to a verified Python version (3.12 or 3.13) and rerun setup." -ForegroundColor Yellow
+			Write-Host "        2. Install Visual Studio Build Tools (Desktop development with C++) and rerun." -ForegroundColor Yellow
+			Write-Host "        3. Manually download a matching wheel from community collections (e.g. Hugging Face llama-cpp-wheels)." -ForegroundColor Yellow
             Read-Host "  Press Enter to exit"
             exit 1
         }
