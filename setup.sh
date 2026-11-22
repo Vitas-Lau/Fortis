@@ -7,17 +7,28 @@ echo ""
 echo "  Fortis - Cybersecurity Advisor : setup"
 echo "  ----------------------------------------"
 
-# 1. Python check
+# 1. Python check (3.11 - 3.14, verified on 3.13)
+#    * 3.10 and older: matplotlib 3.11.x / torch 2.15 ship cp311+ wheels only,
+#      so requirements.txt would have to be compiled from source.
+#    * 3.11 - 3.14: the llama.cpp index serves py3-none wheels (0.3.36/0.3.37),
+#      so the AI engine installs without a toolchain - including on 3.14.
+#    Anything outside the window is rejected here rather than five minutes
+#    later inside pip, with a message that blames the network.
 PY=""
-for c in python3 python; do
-    if command -v "$c" >/dev/null 2>&1; then
-        v="$("$c" --version 2>&1 | grep -oE 'Python 3\.[0-9]+' || true)"
-        if [ -n "$v" ]; then PY="$c"; break; fi
-    fi
+FOUND=""
+for c in python3.13 python3.12 python3.14 python3.11 python3 python; do
+    command -v "$c" >/dev/null 2>&1 || continue
+    v="$("$c" --version 2>&1 | grep -oE 'Python 3\.[0-9]+' | grep -oE '3\.[0-9]+' || true)"
+    if [ -n "$v" ]; then FOUND="$FOUND $c=$v"; fi
+    case "$v" in
+        3.11|3.12|3.13|3.14) PY="$c"; break ;;
+    esac
 done
 if [ -z "$PY" ]; then
-    echo "  [X] Python 3 not found. Install python3 (https://www.python.org/downloads/)"
-    echo "      or via brew: brew install python"
+    echo "  [X] Compatible Python (3.11 - 3.14) not found.${FOUND:+ Found:$FOUND}"
+    echo "      Python 3.10 or older: no matplotlib / torch wheels for it."
+    echo "      Install python3.13 (https://www.python.org/downloads/) or via brew:"
+    echo "        brew install python@3.13"
     exit 1
 fi
 echo "  [ok] $("$PY" --version)"
@@ -47,7 +58,18 @@ fi
 #    Prebuilt wheels only, from the llama.cpp wheel indexes (PyPI has no
 #    wheels for this package - just the sdist). macOS on Apple Silicon and
 #    Linux get wheels from the CPU index; NVIDIA machines try CUDA first.
-MARKER="$(dirname "$0")/.llama-cuda-ok"
+#    CUDA is not tied to the Python version: the cu124 wheels are tagged
+#    py3-none, so they install on any supported interpreter and only need the
+#    CUDA 12 runtime libraries to load.
+MARKER="$(pwd)/.llama-cuda-ok"
+# True only when the installed wheel was actually built with GPU offload.
+# `import llama_cpp` is not a CUDA test: the CPU wheel imports fine on a GPU.
+llama_has_cuda() {
+    "$VPY" -c "import llama_cpp, sys; sys.exit(0 if getattr(llama_cpp, 'llama_supports_gpu_offload', lambda: False)() else 1)" >/dev/null 2>&1
+}
+has_nvidia() {
+    command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1
+}
 if ! "$VPY" -c "import llama_cpp" >/dev/null 2>&1; then
     echo "  [..] Installing the local AI engine (llama.cpp)..."
     OK=0
@@ -74,12 +96,7 @@ if ! "$VPY" -c "import llama_cpp" >/dev/null 2>&1; then
             "$VPY" -m pip uninstall --disable-pip-version-check --yes llama_cpp_python >/dev/null 2>&1 || true
         fi
     fi
-    if [ "$OK" = "1" ]; then
-        if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1 \
-            && "$VPY" -c "import ctypes; ctypes.CDLL('libcuda.so.1')" >/dev/null 2>&1; then
-            touch "$MARKER"
-        fi
-    else
+    if [ "$OK" = "0" ]; then
         echo "  [X] No prebuilt llama-cpp-python wheel for this system."
         echo "      Options:"
         echo "        1. Install Visual Studio Build Tools / build-essential + CMake and rerun (builds from source)."
@@ -88,12 +105,31 @@ if ! "$VPY" -c "import llama_cpp" >/dev/null 2>&1; then
     fi
 else
     echo "  [ok] AI engine present"
-    [ -f "$MARKER" ] || touch "$MARKER"
+fi
+
+# 4b. One authoritative CUDA record, written for both paths above. The marker
+#     means "a wheel with GPU offload is installed and verified"; writing it
+#     whenever an engine happens to exist is what made CPU-only installs
+#     advertise CUDA. A stale marker is removed instead of trusted.
+if has_nvidia && llama_has_cuda; then
+    touch "$MARKER"
+    echo "  [ok] GPU offload verified (llama_supports_gpu_offload)"
+else
+    if [ -f "$MARKER" ]; then
+        rm -f "$MARKER"
+        echo "       Removed a stale .llama-cuda-ok: the installed wheel has no GPU offload."
+    fi
+    if has_nvidia; then
+        echo "       NVIDIA GPU present, but this wheel is CPU-only - the app will run on CPU."
+        echo "       (The cu124 wheels need the CUDA 12 runtime libs (libcublas/libcudart); a driver alone is not enough.)"
+    fi
 fi
 
 # 5. offline self-test
+#    --basetemp keeps pytest out of a shared /tmp that may be mounted noexec or
+#    ACL-damaged, which otherwise fails every tmp_path fixture at setup.
 echo "  [..] Running offline sanity tests..."
-EMBEDDING_BACKEND=hash-stub "$VPY" -m pytest desktop/tests/ -q --no-header | tail -n 15 || {
+EMBEDDING_BACKEND=hash-stub "$VPY" -m pytest desktop/tests/ -q --no-header --basetemp "$(pwd)/.pytest-tmp" | tail -n 15 || {
     echo "  [X] Self-test failed - see output above"
     exit 1
 }

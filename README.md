@@ -15,6 +15,9 @@ models, vector store, uploads, reports, engagement store, and chat history.
 
 ## Quick start
 
+Requires **Python 3.11 - 3.14** (3.13 is the tested version; the setup scripts
+enforce the window because the wheel set depends on it).
+
 ```powershell
 # Windows
 powershell -ExecutionPolicy Bypass -File setup.ps1
@@ -27,6 +30,28 @@ bash setup.sh
 Then in the app: **⚙ Model** → pick a tier (a suggestion is pre-marked for
 your hardware; the ~3.4 GB download happens once) → **+ New engagement** →
 attach a document (📎) → chat.
+
+### Verified environment
+
+The setup scripts and the offline suite (239 tests) were verified on
+**Python 3.13.17 / Windows 11** with:
+
+| Package | Version | Package | Version |
+|---|---|---|---|
+| fastapi | 0.165.0 | chromadb | 1.5.9 |
+| sentence-transformers | 6.3.0 | torch | 2.15.0 |
+| pymupdf | 2.1 | matplotlib | 3.11.2 |
+| pywebview | 6.2.1 | pytest | 9.2.0 |
+
+`requirements-lock.txt` freezes the full 135-package set from that run;
+`requirements.txt` keeps the loose ranges for day-to-day work.
+
+**GPU offload:** the CUDA wheel indexes ship `py3-none` wheels that install on
+any supported Python, but they link against the **CUDA 12 runtime**
+(`cublas64_12.dll` / `cudart64_12.dll`) and do not bundle it — an NVIDIA
+driver alone is not enough. `setup.ps1` / `setup.sh` verify GPU offload with
+`llama_cpp.llama_supports_gpu_offload()` and only then write `.llama-cuda-ok`;
+when the runtime is missing they fall back to the CPU wheel and say so.
 
 ## Model tiers (Qwen3.5, llama.cpp GGUF, auto-suggested by hardware)
 

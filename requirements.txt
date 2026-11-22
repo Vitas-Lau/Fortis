@@ -1,3 +1,8 @@
+# Runtime dependencies. Supported interpreters: Python 3.11 - 3.14.
+# The floor is not arbitrary: matplotlib 3.11.x and torch 2.15 publish cp311+
+# wheels only, so 3.10 would compile both from source. The exact set that is
+# known-good on 3.13.17 (the tested environment) is frozen in
+# requirements-lock.txt - use that file when you need a reproducible install.
 fastapi
 uvicorn[standard]
 python-multipart
@@ -15,6 +20,9 @@ openpyxl
 reportlab
 markdown-it-py
 huggingface_hub>=0.26
+# 3.11.2 is the current release, not an arbitrary ceiling; it is the version
+# the report renderers were exercised against. It has no cp310 wheel, which is
+# what sets the Python floor above.
 matplotlib>=3.11.2
 
 pywebview

@@ -1,7 +1,7 @@
 # Fortis Deployment & Troubleshooting Log
 
 - Platform: Windows 11 (10.0.26300), PowerShell 5.1.26100.9711
-- Last verified: 2026-11-20
+- Last verified: 2026-11-22
 
 ## BUG-01: Python Version Inconsistency & Lack of Prebuilt Wheels (setup.ps1)
 
@@ -21,6 +21,7 @@
   - **Script Modification**: Updated `setup.ps1` to cap the regular expression at `Python 3.(1[0-3])`, adjusted the command detection priority to invoke `py -3.13` / `py -3.12` first, and removed the invalid references to 3.14 from the prompt messages.
   - **Correction (2026-11-20)**: the original text of this entry claimed the environment was "recreated using `py -3.13 -m venv .venv`, completing the installation and offline self-tests without issue". That was not true at the time — venv creation was failing for the reason documented in BUG-02 and only succeeded after the interpreter installations were rebuilt.
   - **Status**: the version cap and the `py -3.13` / `py -3.12` preference are verified present in `setup.ps1`. The wheel-availability claim came from the earlier `pip install --dry-run` runs and was not re-tested in this pass.
+  - **Superseded by R1 (2026-11-22)**: the window is now **3.11 - 3.14** (3.13 preferred). The 3.14 exclusion and the `(1[0-3])` cap described above no longer apply — the llama.cpp indexes now serve `py3-none` wheels that install and import on 3.14, while 3.10 has no matplotlib/torch `cp310` wheels. See **R1** for the measurements.
 
 ## BUG-02: `py -3.13 -m venv .venv` fails with "Unable to copy ... venvlauncher.exe" — WinError 2
 
@@ -170,7 +171,218 @@
   - After all four runs `%APPDATA%\Fortis\models\active_model.json` is **absent**: the suite no longer touches the real profile.
   - `Parser::ParseFile(setup.ps1)` → `PARSE OK`.
 
-## Current environment state (verified 2026-11-20)
+## Review pass 2026-11-22 — four reported defects
+
+Second review of the same scripts, four reports. Two reproduce as described,
+one reproduces with a different root cause than reported, and one does not
+reproduce at all.
+
+Three numbering conventions collide, so each row names all of them: the
+**audit list** numbers these four items **BUG-04 - BUG-07**, the **review
+request** that was handed over renumbered them **BUG-01 - BUG-04**, and the
+sections below use **R1 - R4** because this document already spends
+BUG-01..BUG-05 on earlier entries. Cite the audit ID when cross-referencing:
+`BUG-06` and `BUG-07` exist only under that numbering. In the sections below,
+a bare BUG-0x reference means the entry above; audit IDs are always written
+as `(audit BUG-0x)`.
+
+| Report | Audit list | Filed in the review request | Outcome |
+|---|---|---|---|
+| R1 | BUG-04 | BUG-01 — Python version window vs. wheels | Already fixed in 876a6c9; residual defects found and fixed |
+| R2 | BUG-05 | BUG-02 — marker written unconditionally on second run | **Reproduced on this machine**; fixed in both scripts |
+| R3 | BUG-06 | BUG-03 — pip calls abort the script | Abort not reproducible; different real defect found and fixed |
+| R4 | BUG-07 | BUG-04 — `matplotlib>=3.11.2` breaks resolution | Not reproducible; the real constraint is the Python floor |
+
+### R1 (audit BUG-04): the version window was wrong in both directions, and the stated reason was stale
+
+- **What was reported**: "line 21's regex accepts 3.0-3.14 while line 125 says
+  only 3.13 has a wheel".
+- **State of the code**: line 21 is `$pyArgs = @()`; the regexes are
+  `Python 3\.(1[2-3])\.` (launcher probe) and `Python 3\.(1[0-3])\.` (generic
+  fallback). The permissive-regex defect was fixed in 876a6c9, so that part of
+  the report is reading a pre-fix version of the file.
+- **Residual defect 1 (floor too low)**: the window admitted 3.10, but
+  `requirements.txt` pins `matplotlib>=3.11.2`, whose PyPI release publishes
+  cp311 / cp312 / cp313 / cp314 / cp315 win_amd64 wheels and **no cp310**
+  (53 files in the release). torch 2.15.0 has the same cp311+ floor. On 3.10
+  the dependency step therefore drops to a source build and fails at
+  "check internet connection", which is a misleading message for a wheel
+  problem.
+- **Residual defect 2 (ceiling too low, reason false)**: the script claimed
+  "3.14+ is incompatible due to missing prebuilt wheels". That is no longer
+  true. `llama-cpp-python`'s indexes serve `py3-none-win_amd64` wheels with no
+  `data-requires-python` constraint: cpu up to 0.3.36, cu124 up to 0.3.37.
+  Measured on this machine:
+
+  ```
+  py -3.14 -m venv v314
+  v314\Scripts\pip install --only-binary :all: llama-cpp-python \
+      --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+  -> llama_cpp 0.3.36 imports (gpu_offload False)
+
+  v314\Scripts\pip install --dry-run --only-binary :all: --report r.json -r requirements-dev.txt
+  -> exit 0, 128 packages resolved (matplotlib 3.11.2, torch 2.15.0, chromadb 1.5.9, pymupdf 2.1)
+  ```
+- **Caveat that the earlier entry also got wrong**: 3.13 is *not* the only
+  version with wheels, and it is *not* CUDA-less. The cu124 index carries a
+  `llama_cpp_python-0.3.37-py3-none-win_amd64.whl` that pip installs on 3.13;
+  the wheel simply links against the CUDA 12 runtime that it does not bundle
+  (see R3). CUDA availability is a runtime question, not a Python-version one.
+- **Fix**:
+  - `setup.ps1`: window 3.11-3.14, preference order `3.13, 3.12, 3.14, 3.11`,
+    with the floor and the py3-none wheel facts recorded in the comment.
+  - `setup.sh`: window 3.11-3.14; rejects anything else up front and prints the
+    interpreters it actually found (`python3=X.Y ...`), instead of accepting
+    any "Python 3" and failing later inside pip.
+  - Both messages now name the reason for each bound instead of asserting a
+    wheel absence that has stopped being true.
+- **Verification**: `[Parser]::ParseFile(setup.ps1)` → `PARSE OK`;
+  `bash -n setup.sh` → ok; a full run of the script prints `[ok] Python
+  3.13.17` (3.13 is now chosen first).
+
+### R2 (audit BUG-05): `.llama-cuda-ok` was written for any installed engine (confirmed live)
+
+- **What was reported**: the "engine already present" branch writes the marker
+  unconditionally, so a CPU wheel is recorded as CUDA-capable.
+- **Reproduction on this machine** (RTX 4080, 16.0 GB VRAM, `llama_cpp` 0.3.36
+  installed, `llama_supports_gpu_offload()` → `False`):
+
+  ```
+  llama import exit code: 0
+    [ok] AI engine present
+  marker created: True
+  ```
+  and then, with the marker in place:
+
+  ```
+  detected vram: 16.0   has_nvidia: True
+  llama_supports_gpu_offload(): False
+  can_use_cuda(): True            # engine/hardware.py: vram > 0 and marker exists
+  _auto_gpu_layers(): 999         # offload requested from a CPU-only build
+  ```
+  The consequence is not a crash: a CPU build ignores `n_gpu_layers`, so the
+  model silently runs on CPU while the UI, `/api/model/status`
+  (`backend_wheel: "cuda"`) and the VRAM-based partial-offload arithmetic all
+  assume layers live on the GPU.
+- **Second, unreported path with the same outcome**: `setup.sh` gated the
+  marker on `ctypes.CDLL('libcuda.so.1')`, which succeeds whenever the NVIDIA
+  driver is installed - CPU wheel included. So the install branch could write
+  the marker on Linux for the same wrong reason.
+- **Root cause**: the marker was written by *presence* tests (`import
+  llama_cpp`, `[ -f "$MARKER" ]`, `CDLL`), never by a *capability* test.
+- **Fix**: one authoritative block after the install logic in both scripts,
+  driven by `llama_cpp.llama_supports_gpu_offload()` plus an `nvidia-smi`
+  check. The marker is created only when both hold, and a stale marker is
+  deleted when they do not. The import probe no longer decides anything about
+  CUDA.
+- **Verification** (`setup.ps1` block extracted verbatim, run against a fake
+  interpreter; `setup.sh` block extracted verbatim, run under
+  `set -euo pipefail`):
+
+  | case | expected | result |
+  |---|---|---|
+  | GPU + CUDA wheel | marker written | marker = YES |
+  | GPU + CPU wheel | no marker, warning | marker = NO, warning printed |
+  | GPU + CPU wheel, stale marker present | marker removed | marker = NO |
+  | no nvidia-smi + CUDA wheel | no marker | marker = NO |
+  | no nvidia-smi + stale marker | marker removed | marker = NO |
+  | full `setup.ps1` run on this machine | no marker | marker = NO |
+
+### R3 (audit BUG-06): pip exit codes were ignored; the import probe cannot stand in for them
+
+- **What was reported**: `pip install` / `pip uninstall` are not wrapped in
+  `Invoke-Native`, so stderr from a failing CUDA wheel aborts the script.
+- **Not reproducible as stated**: all three `pip uninstall ... 2>$null` calls
+  were already wrapped in 876a6c9/e907f96. The install calls have no
+  redirection at all, and the `NativeCommandError` matrix in the BUG-04 entry
+  above showed that *unredirected* stderr does
+  not become an `ErrorRecord`, so `$ErrorActionPreference = "Stop"` does not
+  fire. A failing pip install continues to the fallback.
+- **The real defect**: the install exit codes were never inspected - `$ok` was
+  set from `import llama_cpp`. That probe is satisfied by any importable
+  wheel, including one left behind by a failed uninstall, so the CUDA branch
+  could report success after pip had failed. It also depends on the *next*
+  person not adding `2>&1` to those calls, which would immediately restore the
+  `NativeCommandError` abort described in BUG-04 above.
+- **Fix**: every `pip install` is wrapped in `Invoke-Native`, its
+  `$LASTEXITCODE` is captured (`$cudaExit`, `$cpuExit`) and used together with
+  the import probe. Failures now print the exit code; the source-build attempt
+  checks its own exit code too.
+- **What the CUDA path actually does on this machine** (fresh 3.13 venv, no
+  MSVC, no CUDA toolkit):
+
+  ```
+  [..] Installing the local AI engine (llama.cpp, ~200 MB)...
+       NVIDIA GPU detected - trying the CUDA wheel first...
+       The CUDA wheel installed but llama.dll will not load - cleaning up.
+       Cause: the CUDA 12 runtime (cublas64_12.dll / cudart64_12.dll) is not on PATH.
+       An NVIDIA driver is not enough - install the CUDA 12 runtime, or keep the CPU wheel.
+       Trying the prebuilt CPU wheel (llama.cpp CPU index)...
+  [ok] Engine installed (CPU)
+       NVIDIA GPU present, but this wheel is CPU-only - the app will run on CPU.
+  FINAL: marker=False
+  ```
+  The wheel that triggered it: `llama_cpp_python-0.3.37-py3-none-win_amd64.whl`
+  from the cu124 index (`ggml-cuda.dll` present, no `cudart`/`cublas`
+  bundled), failing with `RuntimeError: Failed to load shared library
+  ...\llama.dll: Could not find module ... or one of its dependencies`.
+  `Test-CudaRuntime` now distinguishes this case from "no wheel for this
+  version", which is what the message used to imply.
+
+### R4 (audit BUG-07): `matplotlib>=3.11.2` is the current release, not an impossible pin
+
+- **What was reported**: the floor is "extremely high" and unpinned packages
+  cause resolution failures.
+- **Measured**: 3.11.2 *is* the latest matplotlib; the release ships
+  cp311-cp315 wheels. On the tested interpreter the full set resolves:
+
+  ```
+  .venv\Scripts\pip install --dry-run --ignore-installed --only-binary :all: -r requirements-dev.txt
+  -> exit 0, 132 packages, matplotlib 3.11.2 / torch 2.15.0 / chromadb 1.5.9 / pymupdf 2.1
+  ```
+  No dependency conflict, no downgrade, nothing built from source.
+- **Where resolution does break**: Python 3.10, for the reason in R1 (no cp310
+  wheels). That is a Python-window bug, not a matplotlib-pin bug, and lowering
+  the pin would have masked it.
+- **Fix**: the floor stays; `requirements.txt` now states the 3.11-3.14 window
+  and why the matplotlib pin implies it. Reproductibility is handled
+  separately: `requirements-lock.txt` freezes the 135-package set from the
+  verified venv (`pip install --dry-run -r requirements-lock.txt` → exit 0).
+  `llama-cpp-python` is excluded there on purpose - PyPI publishes only an
+  sdist for it, so a lock entry would send every user into a source build;
+  the setup scripts install the prebuilt wheel instead.
+
+### Self-test: pytest was writing into a directory it could not read
+
+- **Symptom**: `pytest desktop/tests/` failed with `22 errors, 217 passed`;
+  every error was `ERROR at setup`, and the traceback bottomed out at
+  `PermissionError: [WinError 5]` on
+  `C:\Users\VITASL\AppData\Local\Temp\pytest-of-VITASL`.
+- **Cause**: that directory carries an ACL that denies the current user
+  (`icacls` cannot read it either, and `rm -rf` / `Remove-Item` fail; it needs
+  elevation to take ownership). pytest could not create its `tmp_path` root,
+  so every fixture using it errored before the test body ran - which reads
+  like a code failure, not an environment one.
+- **Fix**: `setup.ps1` and `setup.sh` pass `--basetemp` pointing at
+  `.pytest-tmp/` inside the repo (git-ignored), so the self-test does not
+  depend on `%TEMP%`. Verified: `239 passed` with `--basetemp`, exit 0.
+- **Not fixed**: `.pytest_cache/` in the repo has the same broken ACL and
+  pytest now warns `could not create cache path ... [WinError 5]`. The warning
+  is non-fatal and the suite still passes; removing the directory requires an
+  elevated shell.
+
+### What changed in this pass
+
+| File | Change |
+|---|---|
+| `setup.ps1` | 3.11-3.14 window (3.13 preferred); `Test-NvidiaGpu` cached probe; `Test-CudaRuntime`; single post-install marker verification with stale-marker removal; all pip calls wrapped with exit-code checks; `--basetemp` for the self-test |
+| `setup.sh` | same window with an up-front reject that lists found interpreters; `llama_has_cuda` / `has_nvidia` helpers; single marker verification; `--basetemp` |
+| `requirements.txt` | documents the 3.11-3.14 window and the matplotlib floor; points at the lock |
+| `requirements-lock.txt` | new: 135 verified pins from the 3.13.17 venv |
+| `README.md` | verified-environment table and the CUDA 12 runtime requirement |
+| `.gitignore` | `.pytest-tmp/` |
+
+## Current environment state (verified 2026-11-20, re-checked 2026-11-22)
 
 | Interpreter | `py` tag | `sysconfig.is_python_build()` |
 |---|---|---|
@@ -180,5 +392,18 @@
 
 `py --list` and `py -0p` both exit 0. Launcher options need a double dash: `py --list` (or `py -0p` / `py --list-paths`); the single-dash `py -list` is forwarded to the default interpreter and fails there with `Unknown option: -l`.
 
-Project environment: `.venv` (3.13.17) holds the full requirements set — 136 packages, including fastapi 0.165.0, chromadb 1.5.9, torch 2.15.0, sentence-transformers 6.3.0, pymupdf 2.1, pywebview 6.2.1 and pytest 9.2.0 — plus `llama_cpp_python` 0.3.36 (installed 14:18:57). The offline self-test runs `239 passed` in ~40 s.
+Project environment: `.venv` (3.13.17) holds the full requirements set — 136 packages, including fastapi 0.165.0, chromadb 1.5.9, torch 2.15.0, sentence-transformers 6.3.0, pymupdf 2.1, pywebview 6.2.1, matplotlib 3.11.2 and pytest 9.2.0 — plus `llama_cpp_python` 0.3.36. The offline self-test runs `239 passed` in ~15 s (since the 2026-11-22 pass: `--basetemp .pytest-tmp`, and the venv's pytest is no longer pointed at `%TEMP%`).
+
+Hardware as re-checked 2026-11-22:
+
+| Item | State |
+|---|---|
+| GPU | NVIDIA GeForce RTX 4080, 16.0 GB VRAM (`nvidia-smi -L` exit 0) |
+| `llama_supports_gpu_offload()` | `False` — the installed 0.3.36 wheel is a CPU build (`ggml-cpu.dll`; no `ggml-cuda.dll`) |
+| CUDA 12 runtime | absent: no `cublas64_12.dll` / `cudart64_12.dll` on PATH, no CUDA toolkit directory |
+| MSVC / CMake | absent (`vswhere.exe` not found, no `cmake`) — the source build path cannot run here |
+| `.llama-cuda-ok` | absent, and now stays absent until a wheel reports GPU offload |
+
+Consequences: `can_use_cuda()` is `False`, `_auto_gpu_layers()` is `0`, `backend_wheel` is `cpu`. That is the correct state for this machine — GPU offload needs the CUDA 12 runtime, not a different Python.
+
 
