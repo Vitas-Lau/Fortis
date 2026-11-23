@@ -129,8 +129,8 @@ fi
 #    --basetemp keeps pytest out of a shared /tmp that may be mounted noexec or
 #    ACL-damaged, which otherwise fails every tmp_path fixture at setup.
 echo "  [..] Running offline sanity tests..."
-EMBEDDING_BACKEND=hash-stub "$VPY" -m pytest desktop/tests/ -q --no-header --basetemp "$(pwd)/.pytest-tmp" | tail -n 15 || {
-    echo "  [X] Self-test failed - see output above"
+EMBEDDING_BACKEND=hash-stub "$VPY" -m pytest desktop/tests/ -q --no-header --basetemp "$(pwd)/.pytest-tmp" | tee .pytest-self-test.log | tail -n 15 || {
+    echo "  [X] Self-test failed - full output: $(pwd)/.pytest-self-test.log"
     exit 1
 }
 echo "  [ok] Self-tests passed"

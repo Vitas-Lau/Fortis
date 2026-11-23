@@ -382,7 +382,66 @@ as `(audit BUG-0x)`.
 | `README.md` | verified-environment table and the CUDA 12 runtime requirement |
 | `.gitignore` | `.pytest-tmp/` |
 
-## Current environment state (verified 2026-11-20, re-checked 2026-11-22)
+## CUDA 12 installed but never detected — stale process PATH, plus detection hardening (2026-11-23)
+
+- **Issue / Symptoms**:
+  - `setup.ps1` reported the CUDA wheel could not load, then fell back to CPU:
+
+    ```
+    NVIDIA GPU detected - trying the CUDA wheel first...
+    The CUDA wheel installed but llama.dll will not load - cleaning up.
+    Cause: the CUDA 12 runtime (cublas64_12.dll / cudart64_12.dll) is not on PATH.
+    An NVIDIA driver is not enough - install the CUDA 12 runtime, or keep the CPU wheel.
+    ```
+
+  - CUDA 12.0 **was** installed at `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0`, with both DLLs present in its `bin`, `CUDA_PATH` pointing at it, and `...\v12.0\bin` present in the machine PATH. The CUDA wheel failed with `RuntimeError: Failed to load shared library ... llama.dll: Could not find module ... (or one of its dependencies)`.
+
+- **Root Cause**:
+  - The PowerShell that ran `setup.ps1` had been started **before** the toolkit finished installing (CUDA 13.5 at 14:05, CUDA 12.0 at 14:11). Windows copies the environment block when a process is created and never updates a running one, so that shell — and every child process, including `setup.ps1` and its `python.exe` — carried the **pre-install** PATH.
+  - `Test-CudaRuntime` scans only `$env:PATH`, so it correctly answered "not on PATH" *for that process* while the machine PATH was fine; the follow-up advice ("install the CUDA 12 runtime") was therefore misleading — it was already installed.
+  - CUDA 13.5 cannot help the cu124 wheel: it links `cublas64_12.dll`, and 13.x ships `cublas64_13.dll`. Only the 12.x toolkit satisfies it.
+
+- **Resolution**:
+  - `engine/llama_engine.py`: new `_add_cuda_dll_dir()` registers `%CUDA_PATH%\bin` (falling back to the newest `CUDA\v12*\bin`) with `os.add_dll_directory()` and pre-loads `cudart64_12`, `cublasLt64_12`, `cublas64_12` by absolute path before `import llama_cpp`; the returned handles are kept for the process lifetime. GPU offload no longer depends on PATH at all.
+  - `setup.ps1::Test-CudaRuntime`: **both** `cublas64_12.dll` and `cudart64_12.dll` must resolve in the same directory (previously either one was enough — a half-installed runtime produced a false positive); PATH entries are now `.Trim().Trim('"')`-ed and checked with `Test-Path -LiteralPath -PathType Container`, so quoted, empty, stale or file entries cannot raise under `$ErrorActionPreference = "Stop"`.
+  - Comment/message alignment: the cached GPU probe is documented as being called only by the llama.cpp step; the wheel-failure hint now reads `3.11 - 3.14, verified on 3.13`, matching the interpreter check at the top of the script.
+  - `setup.sh`: the self-test now tees the complete pytest output to `.pytest-self-test.log` and prints the last 15 lines, matching `setup.ps1` across platforms.
+  - Repository hygiene: `docs/fix(setup) lock python version to 3.13 and resolve BUG-01.txt` (37 KB raw console transcript) was removed — its findings live here as BUG-01…BUG-04.
+
+- **Verification (2026-11-23)**:
+
+  | check | result |
+  |---|---|
+  | `Test-CudaRuntime` with a plain PATH (no CUDA) | `False` |
+  | quoted CUDA dir `"C:\...\v12.0\bin"` on PATH | `True` (quotes stripped) |
+  | empty / missing / file PATH entries under `EAP = "Stop"` | `False`, no exception |
+  | directory containing only `cudart64_12.dll` | `False` (both required) |
+  | directory containing both DLLs | `True` |
+  | `engine.llama_engine._backend_wheel()` with the stale PATH (no CUDA entry) | `cuda`, `llama_supports_gpu_offload()` → `True` |
+  | `Parser::ParseFile(setup.ps1)` / `bash -n setup.sh` | `PARSE OK` / syntax OK |
+  | full suite | `239 passed` |
+
+## Dual-mode smoke test (2026-11-23)
+
+Screenshots taken by the project owner, stored in `..\note\雙模式並截圖存證\`:
+
+- `螢幕擷取畫面 2026-11-23 150642.png` — native pywebview window (no browser chrome): desktop mode, empty state, footer reads *"Using built-in stub responses (no model loaded)"*.
+- `螢幕擷取畫面 2026-11-23 150735.png` — the same UI in a browser at `127.0.0.1:8757`: server mode serves the identical app.
+
+Headless pipeline proof (stub backend, isolated temp data dir, no model needed):
+
+| step | result |
+|---|---|
+| `python -m server.app --port 8761` → `GET /health` | 200 |
+| `POST /engagements` | `demo-client-campus-network-review` |
+| `POST /upload` (markdown policy) | 200, `chunks_indexed: 1` |
+| `POST /report/generate` `{format: pdf, allow_stub: true}` | 200, `download_url: /report/download/...pdf` |
+| generated file | 45,217 bytes, magic `%PDF-` |
+| `GET /report/download/<file>` | 200, 45,217 bytes |
+
+Both screenshots are in the **no-model stub state**: a model-loaded (GGUF) conversation and a PDF exported from the running GUI are not yet captured and remain the outstanding evidence item.
+
+## Current environment state (verified 2026-11-20)
 
 | Interpreter | `py` tag | `sysconfig.is_python_build()` |
 |---|---|---|
@@ -405,5 +464,19 @@ Hardware as re-checked 2026-11-22:
 | `.llama-cuda-ok` | absent, and now stays absent until a wheel reports GPU offload |
 
 Consequences: `can_use_cuda()` is `False`, `_auto_gpu_layers()` is `0`, `backend_wheel` is `cpu`. That is the correct state for this machine — GPU offload needs the CUDA 12 runtime, not a different Python.
+
+Re-checked 2026-11-23 on this laptop, after the CUDA toolkit install and the cu124 wheel:
+
+| Item | State |
+|---|---|
+| GPU | NVIDIA GeForce GTX 1660 Ti with Max-Q Design, 6.0 GB VRAM, driver 621.14, compute 7.5 (no tensor cores) |
+| CUDA toolkits | v13.5 (installed 14:05) and **v12.0** (14:11); `CUDA_PATH` → `...\NVIDIA GPU Computing Toolkit\CUDA\v12.0` |
+| CUDA 12 runtime | `cublas64_12.dll`, `cublasLt64_12.dll`, `cudart64_12.dll` present in `v12.0\bin` |
+| Machine PATH | contains `...\v12.0\bin`; a shell started **before** 14:11 does not — the stale-PATH effect documented above |
+| Installed wheel | `llama_cpp_python` 0.3.37 from the cu124 index (`ggml-cuda.dll` present) |
+| `llama_supports_gpu_offload()` | `True`, with or without CUDA on PATH (`_add_cuda_dll_dir()`), GPU 0 enumerated |
+| `.llama-cuda-ok` | present |
+
+The 2026-11-22 table above is kept as recorded (state before the toolkit install, CPU wheel). Its RTX 4080 row does not match this laptop's `nvidia-smi` output (GTX 1660 Ti Max-Q, 6 GB).
 
 

@@ -9,8 +9,8 @@ function Invoke-Native {
     try { & $Command } finally { $ErrorActionPreference = $prev }
 }
 
-# Cached GPU probe: called once for the interpreter choice and again for the
-# llama.cpp wheel choice, but nvidia-smi is only invoked the first time.
+# Cached GPU probe: the llama.cpp wheel step is its only caller today, but the
+# cache keeps nvidia-smi to one invocation however many call sites appear.
 $script:NvidiaProbed = $false
 $script:HasNvidiaValue = $false
 function Test-NvidiaGpu {
@@ -121,15 +121,22 @@ function Test-LlamaCuda {
 
 function Test-CudaRuntime {
     # The cu124 wheels link against the CUDA 12 runtime but do not bundle it
-    # (only ggml-cuda.dll ships in the wheel). When cublas64_12.dll /
-    # cudart64_12.dll are absent, llama.dll fails to load and the import error
-    # says "Could not find module ... or one of its dependencies", which reads
-    # like a broken wheel rather than a missing runtime.
-    foreach ($dir in ($env:PATH -split ';')) {
+    # (only ggml-cuda.dll ships in the wheel). BOTH cublas64_12.dll and
+    # cudart64_12.dll must resolve, or llama.dll fails to load and the import
+    # error says "Could not find module ... or one of its dependencies", which
+    # reads like a broken wheel rather than a missing runtime.
+    # PATH entries can be quoted, empty or stale; each one is cleaned and
+    # existence-checked first, because $ErrorActionPreference = "Stop" turns a
+    # malformed path into a fatal error instead of a skipped entry.
+    $required = @("cublas64_12.dll", "cudart64_12.dll")
+    foreach ($entry in ($env:PATH -split ';')) {
+        $dir = $entry.Trim().Trim('"')
         if (-not $dir) { continue }
-        foreach ($dll in @("cublas64_12.dll", "cudart64_12.dll")) {
-            if (Test-Path (Join-Path $dir $dll)) { return $true }
-        }
+        if (-not (Test-Path -LiteralPath $dir -PathType Container)) { continue }
+        $missing = @($required | Where-Object {
+            -not (Test-Path -LiteralPath (Join-Path $dir $_) -PathType Leaf)
+        })
+        if ($missing.Count -eq 0) { return $true }
     }
     return $false
 }
@@ -212,7 +219,7 @@ if (-not (Test-LlamaImport)) {
         if (-not $installed) {
             Write-Host "  [X] No prebuilt llama-cpp-python wheel for $(& $pyExe @pyArgs --version) on this system." -ForegroundColor Red
             Write-Host "      Options:" -ForegroundColor Yellow
-            Write-Host "        1. Switch to a verified Python version (3.12 or 3.13) and rerun setup." -ForegroundColor Yellow
+            Write-Host "        1. Switch to a verified Python version (3.11 - 3.14, verified on 3.13) and rerun setup." -ForegroundColor Yellow
             Write-Host "        2. Install Visual Studio Build Tools (Desktop development with C++) and rerun." -ForegroundColor Yellow
             Write-Host "        3. Manually download a matching wheel from community collections (e.g. Hugging Face llama-cpp-wheels)." -ForegroundColor Yellow
             Read-Host "  Press Enter to exit"

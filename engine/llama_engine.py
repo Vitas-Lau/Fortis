@@ -30,6 +30,58 @@ _STATE: dict = {
 
 _STOP_TOKENS = ["<|im_end|>", "</think>"]
 
+# Kept alive for the process lifetime: os.add_dll_directory() returns a handle
+# that drops the directory again as soon as it is garbage-collected.
+_DLL_HANDLES: List = []
+
+
+def _add_cuda_dll_dir() -> None:
+    """Make the CUDA 12 runtime findable without relying on PATH.
+
+    The cu124 wheels link against cublas64_12.dll / cudart64_12.dll but do not
+    ship them, and Windows only searches PATH. A process started before the
+    toolkit was installed -- or from a shell whose environment predates the
+    install -- therefore fails with "Could not find module ... or one of its
+    dependencies" even though CUDA is present. Registering the toolkit's bin
+    directory with os.add_dll_directory() fixes that for this process.
+    """
+    if os.name != "nt" or _DLL_HANDLES:
+        return
+    required = ("cublas64_12.dll", "cudart64_12.dll")
+    candidates = []
+    cuda_path = os.environ.get("CUDA_PATH")
+    if cuda_path:
+        candidates.append(os.path.join(cuda_path, "bin"))
+    base = os.path.join(
+        os.environ.get("ProgramFiles", r"C:\Program Files"),
+        "NVIDIA GPU Computing Toolkit", "CUDA",
+    )
+    try:
+        for name in sorted(os.listdir(base), reverse=True):
+            if name.lower().startswith("v12"):
+                candidates.append(os.path.join(base, name, "bin"))
+    except OSError:
+        pass
+    for cand in candidates:
+        if not all(os.path.isfile(os.path.join(cand, dll)) for dll in required):
+            continue
+        try:
+            _DLL_HANDLES.append(os.add_dll_directory(cand))
+        except OSError:
+            continue
+        # ctypes loads llama.dll with LOAD_WITH_ALTERED_SEARCH_PATH, which does
+        # not consult add_dll_directory(); pre-loading the runtime by absolute
+        # path (dependencies first) satisfies the later imports.
+        import ctypes
+
+        for dll in ("cudart64_12.dll", "cublasLt64_12.dll", "cublas64_12.dll"):
+            try:
+                ctypes.WinDLL(os.path.join(cand, dll))
+            except OSError:
+                pass
+        logger.info("CUDA 12 runtime loaded from %s", cand)
+        return
+
 
 def current_model_path() -> Optional[str]:
     """Path of the model that should be used, or None if none is available.
@@ -79,6 +131,7 @@ def _backend_wheel() -> str:
     marker exists and llama_cpp imports, "cpu" when llama_cpp imports without
     the marker, "none" when there is no llama_cpp at all."""
     try:
+        _add_cuda_dll_dir()
         import llama_cpp  # noqa: F401
     except Exception:
         return "none"
@@ -197,6 +250,7 @@ def _load_sync() -> None:
     if _STATE["model"] is not None and _STATE["path"] == path:
         return  # already loaded
     try:
+        _add_cuda_dll_dir()
         from llama_cpp import Llama
 
         n_threads = _resolved_threads()
