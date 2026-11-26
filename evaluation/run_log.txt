@@ -1,0 +1,54 @@
+[09:55:46] Pre-flight: /health
+[09:55:46] Pre-flight: /api/model/status
+[09:55:46]   model = Qwen3.5-4B-Q4_K_M.gguf
+[09:55:46]   health.detail = None  warning = None
+[09:55:46]   vram = 6.0 GB, wheel = cuda, offload = full
+[09:55:46]   RAG_LEVEL = standard (threshold 5000 tokens)
+[09:55:46] Reference sets: local corpus 367 ids, registry 3523 ids
+[09:55:46] Warm-up turn (excluded from measurements)
+[09:55:54]   warm-up reply (6.1s): 'READY'
+[09:55:54]   warm-up engagement deleted
+[09:55:54] Post-warmup: loaded=True offload=full -> hardware_mode=gpu_full(cuda)
+[09:55:55] Engagement Lab1-Firewall -> baseline-lab1-firewall: uploaded firewall-config.txt (2 chunks, 2415 chars), files now ['firewall-config.txt']
+[09:55:56] Engagement Lab2-IAM -> baseline-lab2-iam: uploaded iam-policy.json (2 chunks, 2009 chars), files now ['iam-policy.json']
+[09:56:00] Engagement Lab3-LargePolicy -> baseline-lab3-largepolicy: uploaded large-policy-document.txt (9 chunks, 14011 chars), files now ['large-policy-document.txt']
+[09:56:02] Engagement Lab4-VulnApp -> baseline-lab4-vulnapp: uploaded vulnerable-app.py (3 chunks, 4073 chars), files now ['vulnerable-app.py']
+[09:56:02] T01 [firewall-config.txt / general] prompting ...
+[09:56:49]   T01 done in 46.97s | GT 6/7 (+1 partial) | cites verified=4 gap=0 invented=0
+[09:56:49] T02 [firewall-config.txt / general] prompting ...
+[09:57:32]   T02 done in 43.06s | GT 7/7 | cites verified=5 gap=1 invented=0
+[09:57:32] T03 [iam-policy.json / general] prompting ...
+[09:58:08]   T03 done in 36.44s | GT 4/4 | cites verified=5 gap=3 invented=0
+[09:58:08] T04 [iam-policy.json / general] prompting ...
+[09:58:59]   T04 done in 50.53s | GT 4/4 | cites verified=6 gap=3 invented=0
+[09:58:59] T05 [large-policy-document.txt / general] prompting ...
+[10:00:00]   T05 done in 61.06s | GT 3/7 | cites verified=11 gap=1 invented=0
+[10:00:00] T06 [large-policy-document.txt / grc] prompting ...
+[10:01:11]   T06 done in 70.90s | GT 3/7 | cites verified=11 gap=1 invented=0
+[10:01:11] T08 [vulnerable-app.py / code] prompting ...
+[10:02:06]   T08 done in 55.33s | GT 6/11 | cites verified=9 gap=0 invented=0
+[10:02:06] T09 [vulnerable-app.py / code] prompting ...
+[10:03:11]   T09 done in 65.10s | GT 7/11 (+1 partial) | cites verified=8 gap=2 invented=0
+[10:03:11] T07 [large-policy-document.txt] /report/generate docx ...
+[10:04:06]   T07 done in 54.39s | path=flat | findings=6
+[10:04:06]   CSV written: D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\evaluation\baseline_results.csv (9 rows total)
+[10:04:06]   audit detail: D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\evaluation\step2_1_audit_detail.json
+
+============================================================================================================
+STEP 2.1 BASELINE — SUMMARY
+============================================================================================================
+test  sample                      latency_s  GT found  cite_hit  halluc  weakness
+------------------------------------------------------------------------------------------------------------
+T01   firewall-config.txt             46.97 6/7 (+1 partial)       n/a      No  partial_gt_coverage
+T02   firewall-config.txt             43.06       7/7       yes      No  withdrawn_framework_id
+T03   iam-policy.json                 36.44       4/4       n/a      No  withdrawn_framework_id
+T04   iam-policy.json                 50.53       4/4   partial      No  withdrawn_framework_id
+T05   large-policy-document.txt       61.06       3/7       n/a      No  false_absence_claim
+T06   large-policy-document.txt       70.90       3/7       yes      No  false_absence_claim
+T07   large-policy-document.txt       54.39 n/a (flat_path_not_mapreduce)       n/a      No  flat_path_not_mapreduce
+T08   vulnerable-app.py               55.33      6/11       yes      No  incomplete_gt_coverage
+T09   vulnerable-app.py               65.10 7/11 (+1 partial)       yes      No  wrong_framework_edition
+------------------------------------------------------------------------------------------------------------
+total wall clock across tests: 483.8s   mean: 53.8s   max: 70.9s
+hallucination flagged: none
+============================================================================================================

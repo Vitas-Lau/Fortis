@@ -1,0 +1,752 @@
+{
+  "reaudited": true,
+  "preflight": {
+    "health": {
+      "status": "ok",
+      "detail": null,
+      "frameworks_loaded": [
+        "NIST_CSF",
+        "OWASP_TOP10",
+        "CIS_CONTROLS",
+        "MITRE_ATTACK",
+        "CIS_BENCHMARKS",
+        "ISO_27001",
+        "PCI_DSS",
+        "SOC_2",
+        "GDPR",
+        "HIPAA",
+        "NIST_800-53",
+        "CWE_TOP25"
+      ]
+    },
+    "active_model_file": "Qwen3.5-4B-Q4_K_M.gguf",
+    "model_loaded_at_preflight": true,
+    "model_warning": null,
+    "hardware": {
+      "vram_gb": 6.0,
+      "ram_gb": 23.7,
+      "has_nvidia": true,
+      "offload": "full",
+      "offload_layers": 999,
+      "backend_wheel": "cuda",
+      "can_cuda": true
+    },
+    "suggested_tier": "8b-llama",
+    "captured_at": "2026-11-26T01:55:46.543343+00:00",
+    "rag_level": "standard",
+    "hierarchical_threshold_tokens": 5000,
+    "map_batch_tokens": 2800,
+    "n_ctx": 8192,
+    "n_gpu_layers": -1,
+    "top_k_user_doc": 6,
+    "top_k_framework": 4,
+    "post_warmup": {
+      "loaded": true,
+      "offload": "full",
+      "offload_layers": 999,
+      "backend_wheel": "cuda",
+      "hardware_mode": "gpu_full(cuda)"
+    }
+  },
+  "engagements": {
+    "Lab1-Firewall": "baseline-lab1-firewall",
+    "Lab2-IAM": "baseline-lab2-iam",
+    "Lab3-LargePolicy": "baseline-lab3-largepolicy",
+    "Lab4-VulnApp": "baseline-lab4-vulnapp"
+  },
+  "tests": {
+    "T01": {
+      "row": {
+        "test_id": "T01",
+        "sample_file": "firewall-config.txt",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "general",
+        "expected_framework_refs": "none_requested",
+        "actual_citations": "MITRE_ATTACK[TA0001,TA0006];PCI_DSS[Req1,Req2]",
+        "citation_hit": "n/a",
+        "hallucination_detected": "No",
+        "hallucination_notes": "all cited ids resolve to core/frameworks/",
+        "latency_sec": "46.97",
+        "key_weakness_tag": "partial_gt_coverage"
+      },
+      "audit": {
+        "by_family": {
+          "MITRE_ATTACK": [
+            "TA0001",
+            "TA0006"
+          ],
+          "PCI_DSS": [
+            "Req1",
+            "Req2"
+          ]
+        },
+        "verified_local": [
+          "MITRE_ATTACK:TA0001",
+          "MITRE_ATTACK:TA0006",
+          "PCI_DSS:Req1",
+          "PCI_DSS:Req2"
+        ],
+        "corpus_gap": [],
+        "invented": [],
+        "withdrawn_ids": [],
+        "edition_mismatch": [],
+        "title_notes": [],
+        "iam_logic_notes": [],
+        "false_absence_claims": [],
+        "total_ids": 4
+      },
+      "ground_truth": {
+        "found": [
+          "wan_permit_all",
+          "default_mgmt_creds",
+          "telnet_mgmt",
+          "http_mgmt",
+          "des_md5_vpn",
+          "plaintext_psk"
+        ],
+        "partial": [
+          "snmp_community_public"
+        ],
+        "missing": [],
+        "score": "6/7 (+1 partial)",
+        "numeric": 6.5,
+        "total": 7
+      },
+      "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\T01_firewall-config.md"
+    },
+    "T02": {
+      "row": {
+        "test_id": "T02",
+        "sample_file": "firewall-config.txt",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "general",
+        "expected_framework_refs": "NIST_CSF(categories)",
+        "actual_citations": "NIST_CSF[PR.AC-05,PR.DS-05,PR.DS-06,PR.DS-07,DE.AE-01];NIST_800-53[AC-5];MITRE_ATTACK[TA0001];PCI_DSS[Req1] || withdrawn=5,corpus_gap=5",
+        "citation_hit": "yes",
+        "hallucination_detected": "Yes",
+        "hallucination_notes": "WITHDRAWN: NIST_CSF:DE.AE-01; NIST_CSF:PR.AC-05; NIST_CSF:PR.DS-05; NIST_CSF:PR.DS-06; NIST_CSF:PR.DS-07 | CORPUS_GAP: NIST_CSF:DE.AE-01 (CSF 1.1 subcategory withdrawn in CSF 2.0); NIST_CSF:PR.AC-05 (CSF 1.1 subcategory withdrawn in CSF 2.0); NIST_CSF:PR.DS-05 (CSF 1.1 subcategory withdrawn in CSF 2.0); NIST_CSF:PR.DS-06 (CSF 1.1 subcategory withdrawn in CSF 2.0); NIST_CSF:PR.DS-07 (CSF 1.1 subcategory withdrawn in CSF 2.0)",
+        "latency_sec": "43.06",
+        "key_weakness_tag": "withdrawn_framework_id"
+      },
+      "audit": {
+        "by_family": {
+          "NIST_CSF": [
+            "PR.AC-05",
+            "PR.DS-05",
+            "PR.DS-06",
+            "PR.DS-07",
+            "DE.AE-01"
+          ],
+          "NIST_800-53": [
+            "AC-5"
+          ],
+          "MITRE_ATTACK": [
+            "TA0001"
+          ],
+          "PCI_DSS": [
+            "Req1"
+          ]
+        },
+        "verified_local": [
+          "MITRE_ATTACK:TA0001",
+          "NIST_800-53:AC-5",
+          "PCI_DSS:Req1"
+        ],
+        "corpus_gap": [
+          "NIST_CSF:DE.AE-01 (CSF 1.1 subcategory withdrawn in CSF 2.0)",
+          "NIST_CSF:PR.AC-05 (CSF 1.1 subcategory withdrawn in CSF 2.0)",
+          "NIST_CSF:PR.DS-05 (CSF 1.1 subcategory withdrawn in CSF 2.0)",
+          "NIST_CSF:PR.DS-06 (CSF 1.1 subcategory withdrawn in CSF 2.0)",
+          "NIST_CSF:PR.DS-07 (CSF 1.1 subcategory withdrawn in CSF 2.0)"
+        ],
+        "invented": [],
+        "withdrawn_ids": [
+          "NIST_CSF:DE.AE-01",
+          "NIST_CSF:PR.AC-05",
+          "NIST_CSF:PR.DS-05",
+          "NIST_CSF:PR.DS-06",
+          "NIST_CSF:PR.DS-07"
+        ],
+        "edition_mismatch": [],
+        "title_notes": [],
+        "iam_logic_notes": [],
+        "false_absence_claims": [],
+        "total_ids": 8
+      },
+      "ground_truth": {
+        "found": [
+          "wan_permit_all",
+          "default_mgmt_creds",
+          "telnet_mgmt",
+          "http_mgmt",
+          "des_md5_vpn",
+          "plaintext_psk",
+          "snmp_community_public"
+        ],
+        "partial": [],
+        "missing": [],
+        "score": "7/7",
+        "numeric": 7.0,
+        "total": 7
+      },
+      "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\T02_firewall-config.md"
+    },
+    "T03": {
+      "row": {
+        "test_id": "T03",
+        "sample_file": "iam-policy.json",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "general",
+        "expected_framework_refs": "none_requested",
+        "actual_citations": "NIST_CSF[PR.AC-05,DE.CM-01];ISO_27001[A.5.4,A.8.1];NIST_800-53[AC-5,CM-1];PCI_DSS[Req7];HIPAA[164.310(A)(2)] || withdrawn=1,corpus_gap=4",
+        "citation_hit": "n/a",
+        "hallucination_detected": "Yes",
+        "hallucination_notes": "WITHDRAWN: NIST_CSF:PR.AC-05 | CORPUS_GAP: HIPAA:164.310(A)(2); NIST_800-53:CM-1 (enhancement/base not in local corpus); NIST_CSF:DE.CM-01; NIST_CSF:PR.AC-05 (CSF 1.1 subcategory withdrawn in CSF 2.0)",
+        "latency_sec": "36.44",
+        "key_weakness_tag": "withdrawn_framework_id"
+      },
+      "audit": {
+        "by_family": {
+          "NIST_CSF": [
+            "PR.AC-05",
+            "DE.CM-01"
+          ],
+          "ISO_27001": [
+            "A.5.4",
+            "A.8.1"
+          ],
+          "NIST_800-53": [
+            "AC-5",
+            "CM-1"
+          ],
+          "PCI_DSS": [
+            "Req7"
+          ],
+          "HIPAA": [
+            "164.310(A)(2)"
+          ]
+        },
+        "verified_local": [
+          "ISO_27001:A.5.4",
+          "ISO_27001:A.8.1",
+          "NIST_800-53:AC-5",
+          "PCI_DSS:Req7"
+        ],
+        "corpus_gap": [
+          "HIPAA:164.310(A)(2)",
+          "NIST_800-53:CM-1 (enhancement/base not in local corpus)",
+          "NIST_CSF:DE.CM-01",
+          "NIST_CSF:PR.AC-05 (CSF 1.1 subcategory withdrawn in CSF 2.0)"
+        ],
+        "invented": [],
+        "withdrawn_ids": [
+          "NIST_CSF:PR.AC-05"
+        ],
+        "edition_mismatch": [],
+        "title_notes": [],
+        "iam_logic_notes": [],
+        "false_absence_claims": [],
+        "total_ids": 8
+      },
+      "ground_truth": {
+        "found": [
+          "principal_star",
+          "wildcard_action",
+          "mfa_denial",
+          "cloudtrail_stop_delete"
+        ],
+        "partial": [],
+        "missing": [],
+        "score": "4/4",
+        "numeric": 4.0,
+        "total": 4
+      },
+      "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\T03_iam-policy.md"
+    },
+    "T04": {
+      "row": {
+        "test_id": "T04",
+        "sample_file": "iam-policy.json",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "general",
+        "expected_framework_refs": "NIST_CSF;CIS_CONTROLS;ISO_27001",
+        "actual_citations": "NIST_CSF[PR.AC-05,DE.CM-01];ISO_27001[A.5.4,A.8.1];NIST_800-53[AC-5,CM-1,SC-13];PCI_DSS[Req1];HIPAA[164.310(A)(2)] || withdrawn=1,corpus_gap=4",
+        "citation_hit": "partial",
+        "hallucination_detected": "Yes",
+        "hallucination_notes": "DOMAIN_LOGIC: claims explicit Deny can be overridden by Allow \u2014 in AWS IAM an explicit Deny always overrides any Allow | WITHDRAWN: NIST_CSF:PR.AC-05 | CORPUS_GAP: HIPAA:164.310(A)(2); NIST_800-53:CM-1 (enhancement/base not in local corpus); NIST_CSF:DE.CM-01; NIST_CSF:PR.AC-05 (CSF 1.1 subcategory withdrawn in CSF 2.0)",
+        "latency_sec": "50.53",
+        "key_weakness_tag": "domain_logic_error"
+      },
+      "audit": {
+        "by_family": {
+          "NIST_CSF": [
+            "PR.AC-05",
+            "DE.CM-01"
+          ],
+          "ISO_27001": [
+            "A.5.4",
+            "A.8.1"
+          ],
+          "NIST_800-53": [
+            "AC-5",
+            "CM-1",
+            "SC-13"
+          ],
+          "PCI_DSS": [
+            "Req1"
+          ],
+          "HIPAA": [
+            "164.310(A)(2)"
+          ]
+        },
+        "verified_local": [
+          "ISO_27001:A.5.4",
+          "ISO_27001:A.8.1",
+          "NIST_800-53:AC-5",
+          "NIST_800-53:SC-13",
+          "PCI_DSS:Req1"
+        ],
+        "corpus_gap": [
+          "HIPAA:164.310(A)(2)",
+          "NIST_800-53:CM-1 (enhancement/base not in local corpus)",
+          "NIST_CSF:DE.CM-01",
+          "NIST_CSF:PR.AC-05 (CSF 1.1 subcategory withdrawn in CSF 2.0)"
+        ],
+        "invented": [],
+        "withdrawn_ids": [
+          "NIST_CSF:PR.AC-05"
+        ],
+        "edition_mismatch": [],
+        "title_notes": [],
+        "iam_logic_notes": [
+          "claims explicit Deny can be overridden by Allow \u2014 in AWS IAM an explicit Deny always overrides any Allow"
+        ],
+        "false_absence_claims": [],
+        "total_ids": 9
+      },
+      "ground_truth": {
+        "found": [
+          "principal_star",
+          "wildcard_action",
+          "mfa_denial",
+          "cloudtrail_stop_delete"
+        ],
+        "partial": [],
+        "missing": [],
+        "score": "4/4",
+        "numeric": 4.0,
+        "total": 4
+      },
+      "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\T04_iam-policy.md"
+    },
+    "T05": {
+      "row": {
+        "test_id": "T05",
+        "sample_file": "large-policy-document.txt",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "general",
+        "expected_framework_refs": "none_requested",
+        "actual_citations": "NIST_CSF[PR.AC,DE.CM];CIS_CONTROLS[CIS-16];ISO_27001[A.8.30,A.5.23,A.5.24];OWASP_TOP10[A01:2025,A03:2025,A04:2025,A05:2025,A06:2025];HIPAA[164.308(A)(2)] || invented=1,mislabelled=6,withdrawn=1,corpus_gap=1",
+        "citation_hit": "n/a",
+        "hallucination_detected": "Yes",
+        "hallucination_notes": "INVENTED: 'NIST CSF (DR)' is not a CSF 2.0 function (valid: GV, ID, PR, DE, RS, RC) | MISLABELLED: A05:2025 labelled 'broken access control' but A05:2025 is 'injection'; A03:2025 labelled 'injection' but A03:2025 is 'software supply chain failures'; CIS-16 labelled 'Vendor Risk Management' but CIS-16 is 'Application Software Security'; CIS-13 labelled 'Secure Configuration of IT Assets' but CIS-13 is 'Network Monitoring and Defense'; CIS-4 labelled 'Account Management' but CIS-4 is 'Secure Configuration of Enterprise Assets and Software'; CIS-12 labelled 'Software Development Lifecycle' but CIS-12 is 'Network Infrastructure Management' | FALSE_ABSENCE: claims supply_chain missing/absent, but section 7.3 requires it; claims third_party_risk missing/absent, but section 2.9,10.1 requires it; claims incident_response missing/absent, but section 8.1 requires it | WITHDRAWN: NIST_CSF:PR.AC | CORPUS_GAP: NIST_CSF:PR.AC (CSF 1.1 category withdrawn in CSF 2.0)",
+        "latency_sec": "61.06",
+        "key_weakness_tag": "hallucinated_control_id"
+      },
+      "audit": {
+        "by_family": {
+          "NIST_CSF": [
+            "PR.AC",
+            "DE.CM"
+          ],
+          "CIS_CONTROLS": [
+            "CIS-16"
+          ],
+          "ISO_27001": [
+            "A.8.30",
+            "A.5.23",
+            "A.5.24"
+          ],
+          "OWASP_TOP10": [
+            "A01:2025",
+            "A03:2025",
+            "A04:2025",
+            "A05:2025",
+            "A06:2025"
+          ],
+          "HIPAA": [
+            "164.308(A)(2)"
+          ]
+        },
+        "verified_local": [
+          "CIS_CONTROLS:CIS-16",
+          "HIPAA:164.308(A)(2)",
+          "ISO_27001:A.5.23",
+          "ISO_27001:A.5.24",
+          "ISO_27001:A.8.30",
+          "NIST_CSF:DE.CM",
+          "OWASP_TOP10:A01:2025",
+          "OWASP_TOP10:A03:2025",
+          "OWASP_TOP10:A04:2025",
+          "OWASP_TOP10:A05:2025",
+          "OWASP_TOP10:A06:2025"
+        ],
+        "corpus_gap": [
+          "NIST_CSF:PR.AC (CSF 1.1 category withdrawn in CSF 2.0)"
+        ],
+        "invented": [
+          "'NIST CSF (DR)' is not a CSF 2.0 function (valid: GV, ID, PR, DE, RS, RC)"
+        ],
+        "withdrawn_ids": [
+          "NIST_CSF:PR.AC"
+        ],
+        "edition_mismatch": [],
+        "title_notes": [
+          "A05:2025 labelled 'broken access control' but A05:2025 is 'injection'",
+          "A03:2025 labelled 'injection' but A03:2025 is 'software supply chain failures'",
+          "CIS-16 labelled 'Vendor Risk Management' but CIS-16 is 'Application Software Security'",
+          "CIS-13 labelled 'Secure Configuration of IT Assets' but CIS-13 is 'Network Monitoring and Defense'",
+          "CIS-4 labelled 'Account Management' but CIS-4 is 'Secure Configuration of Enterprise Assets and Software'",
+          "CIS-12 labelled 'Software Development Lifecycle' but CIS-12 is 'Network Infrastructure Management'"
+        ],
+        "iam_logic_notes": [],
+        "false_absence_claims": [
+          "claims supply_chain missing/absent, but section 7.3 requires it",
+          "claims third_party_risk missing/absent, but section 2.9,10.1 requires it",
+          "claims incident_response missing/absent, but section 8.1 requires it"
+        ],
+        "total_ids": 12
+      },
+      "ground_truth": {
+        "found": [
+          "risk_assessment_register",
+          "business_continuity_dr",
+          "supplier_due_diligence"
+        ],
+        "partial": [],
+        "missing": [
+          "asset_inventory",
+          "exception_waiver_process",
+          "key_management",
+          "personnel_screening"
+        ],
+        "score": "3/7",
+        "numeric": 3.0,
+        "total": 7
+      },
+      "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\T05_large-policy-document.md"
+    },
+    "T06": {
+      "row": {
+        "test_id": "T06",
+        "sample_file": "large-policy-document.txt",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "grc",
+        "expected_framework_refs": "NIST_CSF;CIS_CONTROLS;ISO_27001",
+        "actual_citations": "NIST_CSF[PR.AC,DE.CM];CIS_CONTROLS[CIS-16];ISO_27001[A.8.30,A.5.23,A.5.24];OWASP_TOP10[A01:2025,A03:2025,A04:2025,A05:2025,A06:2025];HIPAA[164.308(A)(2)] || invented=1,mislabelled=6,withdrawn=1,corpus_gap=1",
+        "citation_hit": "yes",
+        "hallucination_detected": "Yes",
+        "hallucination_notes": "INVENTED: 'NIST CSF (DR)' is not a CSF 2.0 function (valid: GV, ID, PR, DE, RS, RC) | MISLABELLED: A05:2025 labelled 'broken access control' but A05:2025 is 'injection'; A03:2025 labelled 'injection' but A03:2025 is 'software supply chain failures'; CIS-16 labelled 'Vendor Risk Management' but CIS-16 is 'Application Software Security'; CIS-13 labelled 'Secure Configuration of IT Assets' but CIS-13 is 'Network Monitoring and Defense'; CIS-4 labelled 'Account Management' but CIS-4 is 'Secure Configuration of Enterprise Assets and Software'; CIS-12 labelled 'Software Development Lifecycle' but CIS-12 is 'Network Infrastructure Management' | FALSE_ABSENCE: claims supply_chain missing/absent, but section 7.3 requires it; claims third_party_risk missing/absent, but section 2.9,10.1 requires it; claims incident_response missing/absent, but section 8.1 requires it | WITHDRAWN: NIST_CSF:PR.AC | CORPUS_GAP: NIST_CSF:PR.AC (CSF 1.1 category withdrawn in CSF 2.0)",
+        "latency_sec": "70.90",
+        "key_weakness_tag": "hallucinated_control_id"
+      },
+      "audit": {
+        "by_family": {
+          "NIST_CSF": [
+            "PR.AC",
+            "DE.CM"
+          ],
+          "CIS_CONTROLS": [
+            "CIS-16"
+          ],
+          "ISO_27001": [
+            "A.8.30",
+            "A.5.23",
+            "A.5.24"
+          ],
+          "OWASP_TOP10": [
+            "A01:2025",
+            "A03:2025",
+            "A04:2025",
+            "A05:2025",
+            "A06:2025"
+          ],
+          "HIPAA": [
+            "164.308(A)(2)"
+          ]
+        },
+        "verified_local": [
+          "CIS_CONTROLS:CIS-16",
+          "HIPAA:164.308(A)(2)",
+          "ISO_27001:A.5.23",
+          "ISO_27001:A.5.24",
+          "ISO_27001:A.8.30",
+          "NIST_CSF:DE.CM",
+          "OWASP_TOP10:A01:2025",
+          "OWASP_TOP10:A03:2025",
+          "OWASP_TOP10:A04:2025",
+          "OWASP_TOP10:A05:2025",
+          "OWASP_TOP10:A06:2025"
+        ],
+        "corpus_gap": [
+          "NIST_CSF:PR.AC (CSF 1.1 category withdrawn in CSF 2.0)"
+        ],
+        "invented": [
+          "'NIST CSF (DR)' is not a CSF 2.0 function (valid: GV, ID, PR, DE, RS, RC)"
+        ],
+        "withdrawn_ids": [
+          "NIST_CSF:PR.AC"
+        ],
+        "edition_mismatch": [],
+        "title_notes": [
+          "A05:2025 labelled 'broken access control' but A05:2025 is 'injection'",
+          "A03:2025 labelled 'injection' but A03:2025 is 'software supply chain failures'",
+          "CIS-16 labelled 'Vendor Risk Management' but CIS-16 is 'Application Software Security'",
+          "CIS-13 labelled 'Secure Configuration of IT Assets' but CIS-13 is 'Network Monitoring and Defense'",
+          "CIS-4 labelled 'Account Management' but CIS-4 is 'Secure Configuration of Enterprise Assets and Software'",
+          "CIS-12 labelled 'Software Development Lifecycle' but CIS-12 is 'Network Infrastructure Management'"
+        ],
+        "iam_logic_notes": [],
+        "false_absence_claims": [
+          "claims supply_chain missing/absent, but section 7.3 requires it",
+          "claims third_party_risk missing/absent, but section 2.9,10.1 requires it",
+          "claims incident_response missing/absent, but section 8.1 requires it"
+        ],
+        "total_ids": 12
+      },
+      "ground_truth": {
+        "found": [
+          "risk_assessment_register",
+          "business_continuity_dr",
+          "supplier_due_diligence"
+        ],
+        "partial": [],
+        "missing": [
+          "asset_inventory",
+          "exception_waiver_process",
+          "key_management",
+          "personnel_screening"
+        ],
+        "score": "3/7",
+        "numeric": 3.0,
+        "total": 7
+      },
+      "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\T06_large-policy-document.md"
+    },
+    "T08": {
+      "row": {
+        "test_id": "T08",
+        "sample_file": "vulnerable-app.py",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "code",
+        "expected_framework_refs": "CWE(optional)",
+        "actual_citations": "CWE[CWE-89,CWE-78,CWE-502,CWE-918,CWE-22];ISO_27001[A.8.8];MITRE_ATTACK[T1203,TA0002,T1053] || mislabelled=2",
+        "citation_hit": "yes",
+        "hallucination_detected": "Yes",
+        "hallucination_notes": "MISLABELLED: CWE-89 labelled 'Improper Neutralization of Special Elements used in ' but that is CWE-78's title (Improper Neutralization of Special Ele); CWE-22 labelled 'Improper Input Validation' but that is CWE-20's title (Improper Input Validation)",
+        "latency_sec": "55.33",
+        "key_weakness_tag": "mislabelled_framework_category"
+      },
+      "audit": {
+        "by_family": {
+          "CWE": [
+            "CWE-89",
+            "CWE-78",
+            "CWE-502",
+            "CWE-918",
+            "CWE-22"
+          ],
+          "ISO_27001": [
+            "A.8.8"
+          ],
+          "MITRE_ATTACK": [
+            "T1203",
+            "TA0002",
+            "T1053"
+          ]
+        },
+        "verified_local": [
+          "CWE:CWE-22",
+          "CWE:CWE-502",
+          "CWE:CWE-78",
+          "CWE:CWE-89",
+          "CWE:CWE-918",
+          "ISO_27001:A.8.8",
+          "MITRE_ATTACK:T1053",
+          "MITRE_ATTACK:T1203",
+          "MITRE_ATTACK:TA0002"
+        ],
+        "corpus_gap": [],
+        "invented": [],
+        "withdrawn_ids": [],
+        "edition_mismatch": [],
+        "title_notes": [
+          "CWE-89 labelled 'Improper Neutralization of Special Elements used in ' but that is CWE-78's title (Improper Neutralization of Special Ele)",
+          "CWE-22 labelled 'Improper Input Validation' but that is CWE-20's title (Improper Input Validation)"
+        ],
+        "iam_logic_notes": [],
+        "false_absence_claims": [],
+        "total_ids": 9
+      },
+      "ground_truth": {
+        "found": [
+          "sql_injection",
+          "command_injection",
+          "insecure_deserialization",
+          "path_traversal",
+          "ssrf",
+          "unsafe_yaml_load"
+        ],
+        "partial": [],
+        "missing": [
+          "hardcoded_credentials",
+          "md5_password_hashing",
+          "admin_endpoint_no_authz",
+          "password_hash_exposure",
+          "debug_mode_exposed"
+        ],
+        "score": "6/11",
+        "numeric": 6.0,
+        "total": 11
+      },
+      "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\T08_vulnerable-app.md"
+    },
+    "T09": {
+      "row": {
+        "test_id": "T09",
+        "sample_file": "vulnerable-app.py",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "code",
+        "expected_framework_refs": "CWE;OWASP_TOP10:2025",
+        "actual_citations": "CWE[CWE-89,CWE-502,CWE-94,CWE-918,CWE-22,CWE-444,CWE-798,CWE-532];ISO_27001[A.8.3];OWASP_TOP10[A01:2021,A03:2021,A05:2021];PCI_DSS[Req8] || wrong_edition=3,corpus_gap=2",
+        "citation_hit": "yes",
+        "hallucination_detected": "Yes",
+        "hallucination_notes": "WRONG_EDITION: OWASP_TOP10:A01:2021 (prompt required 2025) [2021 edition (local corpus holds 2025 only)]; OWASP_TOP10:A03:2021 (prompt required 2025) [2021 edition (local corpus holds 2025 only)]; OWASP_TOP10:A05:2021 (prompt required 2025) [2021 edition (local corpus holds 2025 only)] | CORPUS_GAP: CWE:CWE-444; CWE:CWE-532",
+        "latency_sec": "65.10",
+        "key_weakness_tag": "wrong_framework_edition"
+      },
+      "audit": {
+        "by_family": {
+          "CWE": [
+            "CWE-89",
+            "CWE-502",
+            "CWE-94",
+            "CWE-918",
+            "CWE-22",
+            "CWE-444",
+            "CWE-798",
+            "CWE-532"
+          ],
+          "ISO_27001": [
+            "A.8.3"
+          ],
+          "OWASP_TOP10": [
+            "A01:2021",
+            "A03:2021",
+            "A05:2021"
+          ],
+          "PCI_DSS": [
+            "Req8"
+          ]
+        },
+        "verified_local": [
+          "CWE:CWE-22",
+          "CWE:CWE-502",
+          "CWE:CWE-798",
+          "CWE:CWE-89",
+          "CWE:CWE-918",
+          "CWE:CWE-94",
+          "ISO_27001:A.8.3",
+          "PCI_DSS:Req8"
+        ],
+        "corpus_gap": [
+          "CWE:CWE-444",
+          "CWE:CWE-532"
+        ],
+        "invented": [],
+        "withdrawn_ids": [],
+        "edition_mismatch": [
+          "OWASP_TOP10:A01:2021 (prompt required 2025) [2021 edition (local corpus holds 2025 only)]",
+          "OWASP_TOP10:A03:2021 (prompt required 2025) [2021 edition (local corpus holds 2025 only)]",
+          "OWASP_TOP10:A05:2021 (prompt required 2025) [2021 edition (local corpus holds 2025 only)]"
+        ],
+        "title_notes": [],
+        "iam_logic_notes": [],
+        "false_absence_claims": [],
+        "total_ids": 13
+      },
+      "ground_truth": {
+        "found": [
+          "hardcoded_credentials",
+          "sql_injection",
+          "insecure_deserialization",
+          "path_traversal",
+          "ssrf",
+          "unsafe_yaml_load",
+          "debug_mode_exposed"
+        ],
+        "partial": [
+          "admin_endpoint_no_authz"
+        ],
+        "missing": [
+          "md5_password_hashing",
+          "password_hash_exposure",
+          "command_injection"
+        ],
+        "score": "7/11 (+1 partial)",
+        "numeric": 7.5,
+        "total": 11
+      },
+      "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\T09_vulnerable-app.md"
+    },
+    "T07": {
+      "row": {
+        "test_id": "T07",
+        "sample_file": "large-policy-document.txt",
+        "rag_level": "standard",
+        "hardware_mode": "gpu_full(cuda)",
+        "model_name": "Qwen3.5-4B-Q4_K_M.gguf",
+        "prompt_category": "report",
+        "expected_framework_refs": "NIST_CSF;CIS_CONTROLS;ISO_27001",
+        "actual_citations": "report_docx;findings=6;path=flat",
+        "citation_hit": "n/a",
+        "hallucination_detected": "No",
+        "hallucination_notes": "report rendered; framework mapping inside the .docx, not audited here. analysis_path=flat, findings=6",
+        "latency_sec": "54.39",
+        "key_weakness_tag": "flat_path_not_mapreduce"
+      },
+      "raw_output": "evaluation/raw_outputs/T07_large-policy-document.md",
+      "analysis_path": "flat",
+      "progress_snapshots": [
+        "stage=map done=0/1 detail='Single-pass analysis'",
+        "stage=idle done=1/1 detail='Single-pass analysis'"
+      ],
+      "result": {
+        "download_url": "/report/download/baseline-lab3-largepolicy_20261126100405_f6c322.docx",
+        "format": "docx",
+        "findings_count": 6,
+        "overall_risk_rating": "Low",
+        "engagement": {
+          "client_name": "Baseline",
+          "engagement_name": "Lab3-LargePolicy"
+        }
+      }
+    }
+  }
+}

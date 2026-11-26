@@ -1,0 +1,48 @@
+{
+  "health": {
+    "status": "ok",
+    "detail": null,
+    "frameworks_loaded": [
+      "NIST_CSF",
+      "OWASP_TOP10",
+      "CIS_CONTROLS",
+      "MITRE_ATTACK",
+      "CIS_BENCHMARKS",
+      "ISO_27001",
+      "PCI_DSS",
+      "SOC_2",
+      "GDPR",
+      "HIPAA",
+      "NIST_800-53",
+      "CWE_TOP25"
+    ]
+  },
+  "active_model_file": "Qwen3.5-4B-Q4_K_M.gguf",
+  "model_loaded_at_preflight": true,
+  "model_warning": null,
+  "hardware": {
+    "vram_gb": 6.0,
+    "ram_gb": 23.7,
+    "has_nvidia": true,
+    "offload": "full",
+    "offload_layers": 999,
+    "backend_wheel": "cuda",
+    "can_cuda": true
+  },
+  "suggested_tier": "8b-llama",
+  "captured_at": "2026-11-26T01:55:46.543343+00:00",
+  "rag_level": "standard",
+  "hierarchical_threshold_tokens": 5000,
+  "map_batch_tokens": 2800,
+  "n_ctx": 8192,
+  "n_gpu_layers": -1,
+  "top_k_user_doc": 6,
+  "top_k_framework": 4,
+  "post_warmup": {
+    "loaded": true,
+    "offload": "full",
+    "offload_layers": 999,
+    "backend_wheel": "cuda",
+    "hardware_mode": "gpu_full(cuda)"
+  }
+}
