@@ -1,0 +1,40 @@
+[14:00:44] verifying corpus/tooling gaps on disk
+[14:00:44]   HK framework coverage: 0/12 files (0.0%)
+[14:00:44]   IOC extractor modules: 0, KEV catalog files: 0, CVE handling modules: 0
+[14:00:46]   launching: D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Scripts\python.exe -m server.app --port 8757  (RAG_LEVEL=standard)
+[14:00:53]   launched headless server pid 16444
+[14:00:53]   verified RAG_LEVEL in server process: 'standard'
+[14:01:33]   warm-up (11.8s): 'READY'
+[14:01:33]   hardware_mode=gpu_full(cuda) model=Qwen3.5-4B-Q4_K_M.gguf
+[14:01:34]   P01 uploaded iam-policy.json (2 chunks); prompting ...
+[14:02:05]   P01 30.53s, 4525 chars
+[14:02:05]     P01 verdict: halluc=No hit=no tag=HK_COMPLIANCE_GAP
+[14:02:06]   P02 uploaded simulated_soc_alert.log (2 chunks); prompting ...
+[14:02:59]   P02 53.46s, 6804 chars
+[14:02:59]     P02 verdict: halluc=No hit=yes tag=NO_IOC_KEV_ENRICHMENT
+[14:02:59]       IOC recall 5/5; KEV claims 0
+[14:02:59] appending probe rows to CSV
+[14:02:59]   CSV written: D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\evaluation\baseline_results.csv (19 rows total)
+[14:02:59] running desktop/tests/ offline suite
+[14:03:52]   pytest tail:  / -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html / 239 passed, 2 warnings in 44.00s
+[14:03:52]   removed D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.pytest-tmp-eval
+[14:03:52] detail: D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\evaluation\step2_3_audit_detail.json
+
+====================================================================================================
+STEP 2.3 — PROBE SUMMARY
+====================================================================================================
+test   latency  halluc cite    tag
+----------------------------------------------------------------------------------------------------
+P01      30.53  No     no      HK_COMPLIANCE_GAP
+P02      53.46  No     yes     NO_IOC_KEV_ENRICHMENT
+----------------------------------------------------------------------------------------------------
+HK corpus coverage        : 0/12 files = 0.0%
+IOC extractor modules     : 0
+Offline CISA KEV catalogs : 0
+Test functions in suite   : 208 across 14 files
+Accuracy/citation asserts : 2
+====================================================================================================
+
+SERVER LEFT RUNNING pid=16444 on http://127.0.0.1:8757
+Stop it with: evaluation/run_step2_3_probes.py (without --keep-server)
+or kill the PID before starting any other Fortis instance.

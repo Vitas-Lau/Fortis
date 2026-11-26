@@ -712,8 +712,15 @@ def verify_id(family: str, cid: str, local: Dict[str, set], reg: Dict[str, set])
     if family == "MITRE_ATTACK":
         in_local = up in local.get("MITRE_ATTACK", set())
         base = up.split(".")[0]
-        exists = up in reg.get("MITRE_ATTACK", set()) or base in reg.get("MITRE_ATTACK", set())
-        return in_local, exists, ""
+        if "." in up:
+            # a sub-technique must exist exactly; falling back to the base id
+            # would silently accept an invented sub-technique such as T1190.001
+            if up in reg.get("MITRE_ATTACK", set()):
+                return in_local, True, ""
+            if base in reg.get("MITRE_ATTACK", set()):
+                return in_local, False, "sub-technique id does not exist in ATT&CK enterprise"
+            return in_local, False, "technique id does not exist in ATT&CK enterprise"
+        return in_local, up in reg.get("MITRE_ATTACK", set()), ""
 
     if family == "OWASP_TOP10":
         # local corpus holds the 2025 edition only

