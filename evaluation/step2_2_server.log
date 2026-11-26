@@ -1,0 +1,172 @@
+
+
+===== RAG_LEVEL=basic start 2026-11-26T13:20:08.208156 =====
+INFO:core.main:Initializing client/engagement database
+INFO:core.main:Seeding framework reference corpus: ['NIST_CSF', 'OWASP_TOP10', 'CIS_CONTROLS', 'MITRE_ATTACK', 'CIS_BENCHMARKS', 'ISO_27001', 'PCI_DSS', 'SOC_2', 'GDPR', 'HIPAA', 'NIST_800-53', 'CWE_TOP25']
+INFO:engine.llama_engine:CUDA 12 runtime loaded from C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.4\bin
+[llama-cpp-python] loaded bundled OpenMP runtime: D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\libomp140.x86_64.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\ggml-base.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\ggml.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\llama.dll
+
+
+===== RAG_LEVEL=basic start 2026-11-26T13:20:31.708186 =====
+INFO:core.main:Initializing client/engagement database
+INFO:core.main:Seeding framework reference corpus: ['NIST_CSF', 'OWASP_TOP10', 'CIS_CONTROLS', 'MITRE_ATTACK', 'CIS_BENCHMARKS', 'ISO_27001', 'PCI_DSS', 'SOC_2', 'GDPR', 'HIPAA', 'NIST_800-53', 'CWE_TOP25']
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5 "HTTP/1.1 200 OK"
+INFO:sentence_transformers.base.model:Loading SentenceTransformer model from BAAI/bge-small-en-v1.5.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  29%|██▉       | 58/199 [00:00<00:00, 577.30it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 1158.83it/s]
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO:httpx2:HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-en-v1.5/resolve/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/2_Normalize/config.json "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:core.embeddings:CUDA embedding model load failed (cuda); falling back to CPU
+Traceback (most recent call last):
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\core\embeddings.py", line 66, in _get_model
+    return _load_model(device)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\core\embeddings.py", line 60, in _load_model
+    return SentenceTransformer(settings.embedding_model, device=device)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\util\decorators.py", line 46, in wrapper
+    return func(*args, **kwargs)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\sentence_transformer\model.py", line 207, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        model_name_or_path=model_name_or_path,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<15 lines>...
+        default_prompt_name=default_prompt_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\base\model.py", line 325, in __init__
+    self.to(device)
+    ~~~~~~~^^^^^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\base\model.py", line 1781, in to
+    result = super().to(*args, **kwargs)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1392, in to
+    return self._apply(convert)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\base\model.py", line 1809, in _apply
+    return super()._apply(*args, **kwargs)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 933, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 933, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 933, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  [Previous line repeated 1 more time]
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 966, in _apply
+    param_applied = fn(param)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1374, in convert
+    return t.to(
+           ~~~~^
+        device,
+        ^^^^^^^
+        dtype if t.is_floating_point() or t.is_complex() else None,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        non_blocking,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\cuda\__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5 "HTTP/1.1 200 OK"
+INFO:sentence_transformers.base.model:Loading SentenceTransformer model from BAAI/bge-small-en-v1.5.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  48%|████▊     | 96/199 [00:00<00:00, 950.27it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 1552.90it/s]
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO:httpx2:HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-en-v1.5/resolve/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/2_Normalize/config.json "HTTP/1.1 404 Not Found"
+INFO:engine.llama_engine:CUDA 12 runtime loaded from C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.4\bin
+[llama-cpp-python] loaded bundled OpenMP runtime: D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\libomp140.x86_64.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\ggml-base.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\ggml.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\llama.dll
+INFO:engine.llama_engine:Loading GGUF: Qwen3.5-4B-Q4_K_M.gguf (n_gpu_layers=999, n_ctx=8192, n_threads=8, n_batch=512)
+INFO:engine.llama_engine:Model ready in 3.5s (n_gpu_layers=999)
+
+
+===== RAG_LEVEL=full start 2026-11-26T13:24:22.363036 =====
+INFO:core.main:Initializing client/engagement database
+INFO:core.main:Seeding framework reference corpus: ['NIST_CSF', 'OWASP_TOP10', 'CIS_CONTROLS', 'MITRE_ATTACK', 'CIS_BENCHMARKS', 'ISO_27001', 'PCI_DSS', 'SOC_2', 'GDPR', 'HIPAA', 'NIST_800-53', 'CWE_TOP25']
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5 "HTTP/1.1 200 OK"
+INFO:sentence_transformers.base.model:Loading SentenceTransformer model from BAAI/bge-small-en-v1.5.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  39%|███▉      | 78/199 [00:00<00:00, 777.59it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 1634.73it/s]
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO:httpx2:HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-en-v1.5/resolve/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/2_Normalize/config.json "HTTP/1.1 404 Not Found"
+WARNING:core.embeddings:CUDA embedding model load failed (cuda); falling back to CPU
+Traceback (most recent call last):
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\core\embeddings.py", line 66, in _get_model
+    return _load_model(device)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\core\embeddings.py", line 60, in _load_model
+    return SentenceTransformer(settings.embedding_model, device=device)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\util\decorators.py", line 46, in wrapper
+    return func(*args, **kwargs)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\sentence_transformer\model.py", line 207, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        model_name_or_path=model_name_or_path,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<15 lines>...
+        default_prompt_name=default_prompt_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\base\model.py", line 325, in __init__
+    self.to(device)
+    ~~~~~~~^^^^^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\base\model.py", line 1781, in to
+    result = super().to(*args, **kwargs)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1392, in to
+    return self._apply(convert)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\sentence_transformers\base\model.py", line 1809, in _apply
+    return super()._apply(*args, **kwargs)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 933, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 933, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 933, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  [Previous line repeated 1 more time]
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 966, in _apply
+    param_applied = fn(param)
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1374, in convert
+    return t.to(
+           ~~~~^
+        device,
+        ^^^^^^^
+        dtype if t.is_floating_point() or t.is_complex() else None,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        non_blocking,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\torch\cuda\__init__.py", line 609, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5 "HTTP/1.1 200 OK"
+INFO:sentence_transformers.base.model:Loading SentenceTransformer model from BAAI/bge-small-en-v1.5.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  47%|████▋     | 93/199 [00:00<00:00, 883.72it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 1520.11it/s]
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+INFO:httpx2:HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-en-v1.5/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO:httpx2:HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-en-v1.5/resolve/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/2_Normalize/config.json "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+INFO:engine.llama_engine:CUDA 12 runtime loaded from C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.4\bin
+[llama-cpp-python] loaded bundled OpenMP runtime: D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\libomp140.x86_64.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\ggml-base.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\ggml.dll
+[llama-cpp-python].find_library: loaded library from D:\SynologyDrive\LYN\Project\COMP3010HK CW2\Fortis\.venv\Lib\site-packages\llama_cpp\lib\llama.dll
+INFO:engine.llama_engine:Loading GGUF: Qwen3.5-4B-Q4_K_M.gguf (n_gpu_layers=999, n_ctx=8192, n_threads=8, n_batch=512)
+INFO:engine.llama_engine:Model ready in 3.3s (n_gpu_layers=999)
