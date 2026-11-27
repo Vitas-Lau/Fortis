@@ -112,7 +112,7 @@ def test_health(client):
     assert set(data["frameworks_loaded"]) == {
         "NIST_CSF", "OWASP_TOP10", "CIS_CONTROLS", "MITRE_ATTACK",
         "CIS_BENCHMARKS", "ISO_27001", "PCI_DSS", "SOC_2", "GDPR",
-        "HIPAA", "NIST_800-53", "CWE_TOP25",
+        "HIPAA", "NIST_800-53", "CWE_TOP25", "HK_DPO_S17", "HK_DPO_G3",
     }
 
 

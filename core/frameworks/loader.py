@@ -17,9 +17,9 @@ copy of CIS Controls -- and this loader ingests it exactly as published.
 Usage (from inside the backend container, or locally with the same Python
 environment and CHROMA_PERSIST_DIR pointed at the right place):
 
-    python -m app.frameworks.loader NIST_CSF /path/to/NIST.CSWP.29.pdf
-    python -m app.frameworks.loader OWASP_TOP10 /path/to/OWASP-Top-10-2025.pdf
-    python -m app.frameworks.loader CIS_CONTROLS /path/to/CIS_Controls_v8.1.pdf
+    python -m core.frameworks.loader NIST_CSF /path/to/NIST.CSWP.29.pdf
+    python -m core.frameworks.loader OWASP_TOP10 /path/to/OWASP-Top-10-2025.pdf
+    python -m core.frameworks.loader CIS_CONTROLS /path/to/CIS_Controls_v8.1.pdf
 
 The framework name must be one of NIST_CSF, OWASP_TOP10, CIS_CONTROLS, or a
 new custom name -- custom names are also picked up automatically by the RAG

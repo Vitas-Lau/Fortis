@@ -1,0 +1,582 @@
+[
+  {
+    "id": "7.1(a)",
+    "title": "Roles and responsibilities",
+    "text": "Management shall define and assign IT security roles and responsibilities across the organisation.",
+    "category": "General Management",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "8.1(a)",
+    "title": "Departmental IT security policy",
+    "text": "A bureau/department-level IT security policy shall be documented and enforced, derived from the government baseline.",
+    "category": "Management Direction",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "8.1(b)",
+    "title": "Evaluation and periodic review",
+    "text": "The departmental IT security policy shall be evaluated and reviewed periodically to keep it current.",
+    "category": "Management Direction",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "9.1(a)",
+    "title": "IT security responsibilities",
+    "text": "IT security responsibilities shall be defined for staff when they are appointed, while in post, and on termination or change of role.",
+    "category": "Human Resource Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "9.1(c)",
+    "title": "Security training",
+    "text": "Staff shall receive security training appropriate to their role and responsibilities.",
+    "category": "Human Resource Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "10.1(a)",
+    "title": "Inventory of assets",
+    "text": "Assets associated with information and information processing facilities shall be identified and an inventory maintained.",
+    "category": "Asset Management",
+    "function": "IDENTIFY",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "10.2(a)",
+    "title": "Classification and labelling",
+    "text": "Information shall be classified and labelled according to its sensitivity and the harm that could follow from disclosure.",
+    "category": "Asset Management",
+    "function": "IDENTIFY",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "10.3(a)",
+    "title": "Equipment and media control",
+    "text": "Equipment and storage media holding information shall be controlled and protected against unauthorised access and removal.",
+    "category": "Asset Management",
+    "function": "IDENTIFY",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "10.3(b)",
+    "title": "Information erasure",
+    "text": "Information shall be securely erased from media before disposal or reuse so that it cannot be recovered.",
+    "category": "Asset Management",
+    "function": "IDENTIFY",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.1(a)",
+    "title": "Principle of least privilege",
+    "text": "Access to information and systems shall be granted on the principle of least privilege, limited to what the role requires.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.1(c)",
+    "title": "Access control of classified information",
+    "text": "Access to classified information shall be restricted by logical access control appropriate to its classification.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.2(a)",
+    "title": "Data access control",
+    "text": "Access rights shall be granted on a need-to-know basis, clearly defined, documented and reviewed periodically, with records of approval and review retained.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.2(b)",
+    "title": "Controlling the use of special privileges",
+    "text": "Administrative and other special privileges shall be restricted, controlled and reviewed, and their use should be independently checked.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.2(c)",
+    "title": "Removal of access rights",
+    "text": "Access rights shall be removed promptly when no longer required, including on personnel change or departure.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.2(d)",
+    "title": "User identification",
+    "text": "Each user shall be uniquely identifiable so that activity can be attributed to a single individual.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.3(a)",
+    "title": "User accountability",
+    "text": "Users are accountable for activity carried out under their own credentials.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.4(a)",
+    "title": "Information access restriction",
+    "text": "Access to systems and application functions shall be restricted to what the user is authorised to use.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.4(b)",
+    "title": "Password policy",
+    "text": "A documented password policy shall be defined per account category and enforced on all systems, covering minimum length, initial assignment, restricted words, password life cycle and selection rules, combined with password history and account lockout. A minimum length of at least eight characters shall be enforced where technically feasible.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.4(c)",
+    "title": "Password selection",
+    "text": "Users shall choose passwords that resist guessing, avoiding dictionary words, personal data and predictable patterns.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.4(d)",
+    "title": "Compromising password",
+    "text": "All default vendor passwords shall be changed before systems enter service, and compromised passwords shall be reset immediately.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.5(a)",
+    "title": "Mobile computing and communications",
+    "text": "Security requirements for mobile computing shall be defined, and measures adopted to prevent unauthorised access to or disclosure of information held on mobile devices.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.5(b)",
+    "title": "Remote access and home office",
+    "text": "Remote access, including home office arrangements, shall be governed by defined security requirements and controls over the channel and the endpoint.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "11.6(a)",
+    "title": "IoT utilisation",
+    "text": "IoT devices shall only be deployed where their use is justified, with security measures commensurate with the information they handle.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "12.1(a)",
+    "title": "Data encryption",
+    "text": "Encryption shall be applied to protect information in line with its classification, covering data in transit and at rest where required.",
+    "category": "Cryptography",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "12.1(b)",
+    "title": "Cryptographic key management",
+    "text": "Cryptographic keys shall be protected and managed through their life cycle, including generation, distribution, storage, and destruction.",
+    "category": "Cryptography",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "13.1(c)",
+    "title": "Physical access control",
+    "text": "Physical access to secure areas shall be restricted, authorised and recorded so that only permitted personnel can enter.",
+    "category": "Physical Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.1(a)",
+    "title": "Principle of least functionality",
+    "text": "Systems shall be configured with the minimum services, ports and components required for their function.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.1(b)",
+    "title": "Change management",
+    "text": "Changes to information systems shall go through a documented change management process with approval and rollback provision.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.2(c)",
+    "title": "Malware detection and recovery",
+    "text": "Malware detection and recovery measures shall be in place, with definitions kept current and suspected infections contained and reported.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.2(d)",
+    "title": "Content filtering",
+    "text": "Content filtering shall be used to reduce exposure to malicious or inappropriate content.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.3(a)",
+    "title": "Data backup and recovery",
+    "text": "Backup copies of information and software shall be taken and tested at regular intervals, and restoration shall be verified.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.3(b)",
+    "title": "Backup devices and media",
+    "text": "Backup devices and media shall be protected physically and logically, including during offsite transport and storage.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.4(a)",
+    "title": "Log collection and retention",
+    "text": "Activity logs shall be collected, protected against tampering, and retained for a defined period sufficient to support audit and investigation.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.5(a)",
+    "title": "Installation of equipment and software",
+    "text": "Installation of computer equipment and software shall be performed under controlled procedures to preserve the integrity of the environment.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.6(a)",
+    "title": "Vulnerability management process",
+    "text": "A vulnerability management process shall identify, evaluate, mitigate and track vulnerabilities on an ongoing basis.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.6(b)",
+    "title": "Vulnerability scanning",
+    "text": "Vulnerability scanning shall be performed regularly, with findings triaged and remediated according to risk.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.6(c)",
+    "title": "Penetration testing",
+    "text": "Penetration testing shall be performed periodically, and where systems are internet-facing or hold classified information, at a defined higher frequency.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.6(g)",
+    "title": "Patch management",
+    "text": "Patches shall be applied on a risk-based schedule, taking account of exploit likelihood and potential impact, with internet-facing systems prioritised.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.7(a)",
+    "title": "Threat identification",
+    "text": "Threat identification and detection mechanisms shall be established and kept current as the threat landscape changes.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "14.7(b)",
+    "title": "Threat intelligence gathering",
+    "text": "Threat intelligence from recognised sources shall be gathered and used to inform detection and response.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "15.1(h)",
+    "title": "Internet security",
+    "text": "Internet connectivity shall be secured, with the network boundary protected by firewalls and other gateway controls.",
+    "category": "Communications Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "15.1(i)",
+    "title": "Gateway-level protection",
+    "text": "Traffic crossing the network gateway shall be filtered and inspected, with rules reviewed periodically and default-deny applied where appropriate.",
+    "category": "Communications Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "15.2(a)",
+    "title": "Transmission of classified information",
+    "text": "Classified information shall only be transmitted over channels whose protection is commensurate with its classification.",
+    "category": "Communications Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "15.2(b)",
+    "title": "Electronic messaging security",
+    "text": "Electronic messaging shall be protected against interception and spoofing, with appropriate authentication and encryption controls.",
+    "category": "Communications Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "16.1(a)",
+    "title": "Security by design",
+    "text": "Security requirements shall be identified and built into information systems from the outset, including during acquisition.",
+    "category": "System Acquisition",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "16.1(f)",
+    "title": "Program and system testing",
+    "text": "Security shall be tested as part of programme and system testing before systems are put into production.",
+    "category": "System Acquisition",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "16.2(e)",
+    "title": "Program and system change control",
+    "text": "Changes to programs and systems shall be subject to formal change control so that security is not weakened.",
+    "category": "System Acquisition",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "17.1(b)",
+    "title": "Security requirements in contracts",
+    "text": "Contracts with service providers shall contain the security requirements, obligations and service levels expected of them.",
+    "category": "Outsourcing Security",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "17.2(a)",
+    "title": "Monitoring and review of outsourcing",
+    "text": "Outsourcing services shall be monitored and reviewed against the agreed security requirements and service levels.",
+    "category": "Outsourcing Security",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "17.3(a)",
+    "title": "Cloud shared responsibilities",
+    "text": "For cloud services the security responsibilities of the provider and the bureau/department shall be clearly defined before an agreement is signed.",
+    "category": "Outsourcing Security",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "18.1(a)",
+    "title": "Incident monitoring and detection",
+    "text": "Mechanisms shall exist to monitor for and detect security incidents in a timely manner.",
+    "category": "Incident Management",
+    "function": "RESPOND",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "18.1(b)",
+    "title": "Security incident reporting",
+    "text": "Security incidents shall be reported immediately through a defined reporting route to the responsible party.",
+    "category": "Incident Management",
+    "function": "RESPOND",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "18.1(c)",
+    "title": "Security incident response",
+    "text": "A documented incident response process shall be followed, covering containment, eradication, recovery and lessons learned.",
+    "category": "Incident Management",
+    "function": "RESPOND",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "19.1(b)",
+    "title": "Disaster recovery planning",
+    "text": "Disaster recovery plans shall be documented, tested and reviewed so that critical services can be restored.",
+    "category": "Business Continuity",
+    "function": "RECOVER",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "19.2(a)",
+    "title": "Availability of information systems",
+    "text": "Information systems shall provide the resilience and availability required by the business, backed by redundancy where needed.",
+    "category": "Business Continuity",
+    "function": "RECOVER",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "20.1(d)",
+    "title": "Data protection",
+    "text": "Personal data shall be handled in accordance with the Personal Data (Privacy) Ordinance (Cap. 486).",
+    "category": "Compliance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "20.2(a)",
+    "title": "Security risk assessment",
+    "text": "Security risk assessments shall be conducted for information systems at a defined frequency and after significant change.",
+    "category": "Compliance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  },
+  {
+    "id": "20.2(b)",
+    "title": "Security audit",
+    "text": "Security audits shall be performed at a defined frequency, with findings tracked to remediation.",
+    "category": "Compliance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO IT Security Guidelines (G3) v10.2, April 2025",
+    "framework": "HK_DPO_G3",
+    "source_url": "https://www.govcert.gov.hk/doc/G3_EN.pdf"
+  }
+]

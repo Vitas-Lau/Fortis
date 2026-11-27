@@ -1,4 +1,5 @@
 from typing import List, Dict
+import re
 
 from .config import settings
 from . import vectorstore
@@ -10,7 +11,8 @@ precise, evidence-based, and always tie advice to a named control or framework r
 than vague opinion.
 
 Your scope covers all of cybersecurity: frameworks and standards (NIST CSF, OWASP Top \
-10, CIS Controls and Benchmarks, MITRE ATT&CK, ISO 27001, SOC 2, PCI DSS, GDPR, HIPAA), \
+10, CIS Controls and Benchmarks, MITRE ATT&CK, ISO 27001, SOC 2, PCI DSS, GDPR, HIPAA, \
+and the Hong Kong DPO Baseline IT Security Policy (S17) and IT Security Guidelines (G3)), \
 risk assessment and management, vulnerabilities and exploits, threats and malware, \
 incident response, hardening and configuration, IAM and access control, network and \
 application security, encryption, monitoring and detection, and security program \
@@ -47,6 +49,127 @@ ROLE_PRESETS: Dict[str, str] = {
 }
 
 
+def detect_requested_frameworks(query: str) -> List[str]:
+    """Return framework names explicitly named or clearly implied by the query.
+
+    Pure function, no I/O, so it stays cheap and testable. The purpose is
+    retrieval steering: with 14 framework corpora and top_k_framework=4, a
+    question about Hong Kong S17 would otherwise be answered from US/EU
+    controls that happen to share vocabulary.
+    """
+    if not query:
+        return []
+
+    text = query.lower()
+    found: List[str] = []
+
+    def has(*names: str) -> bool:
+        return any(n in text for n in names)
+
+    # Hong Kong: naming either instrument, or the office, or the jurisdiction
+    # together with a compliance-ish word, routes to both corpora.
+    hk_explicit = bool(
+        re.search(r"\bs17\b", text)
+        or re.search(r"\bg3\b", text)
+        or has("ogcio", "digital policy office", "dpo s17", "dpo g3")
+    )
+    hk_jurisdiction = "hong kong" in text or re.search(r"\bhk\b", text) is not None
+    hk_compliance = has("compliance", "comply", "policy", "guideline", "baseline",
+                        "control", "requirement", "audit", "security")
+    if hk_explicit or (hk_jurisdiction and hk_compliance):
+        found.extend(["HK_DPO_S17", "HK_DPO_G3"])
+
+    if has("nist csf", "csf", "nist cybersecurity framework") or re.search(r"\bnist\b", text):
+        found.append("NIST_CSF")
+    if has("nist 800-53", "800-53", "nist sp 800"):
+        found.append("NIST_800-53")
+    if has("owasp"):
+        found.append("OWASP_TOP10")
+    if has("cis controls", "cis control", "cis critical"):
+        found.append("CIS_CONTROLS")
+    if has("cis benchmark"):
+        found.append("CIS_BENCHMARKS")
+    if has("iso 27001", "iso27001", "iso/iec 27001", "iso 27002"):
+        found.append("ISO_27001")
+    if has("mitre", "att&ck", "attck"):
+        found.append("MITRE_ATTACK")
+    if has("pci dss", "pci-dss", "pci "):
+        found.append("PCI_DSS")
+    if has("soc 2", "soc2"):
+        found.append("SOC_2")
+    if has("gdpr"):
+        found.append("GDPR")
+    if has("hipaa"):
+        found.append("HIPAA")
+
+    # dedupe, preserve first-seen order
+    seen = set()
+    out = []
+    for fw in found:
+        if fw not in seen:
+            seen.add(fw)
+            out.append(fw)
+    return out
+
+
+def _query_specific_frameworks(query: str, frameworks: List[str]) -> List[Dict]:
+    """Retrieve this query's best hits from each explicitly named framework.
+
+    Pulls a full top_k per framework rather than a fraction, so the merge has a
+    real candidate pool to choose from instead of whatever two rows happened to
+    rank highest for that corpus.
+    """
+    per_framework = max(2, settings.top_k_framework)
+    hits: List[Dict] = []
+    for fw in frameworks:
+        if settings.rag_level == "basic":
+            hits.extend(vectorstore.query_frameworks(query, per_framework, framework=fw))
+        else:
+            from .rerank import rerank
+
+            got = vectorstore.query_frameworks_hybrid(
+                query, per_framework, settings.rerank_candidate_multiplier, framework=fw
+            )
+            hits.extend(rerank(query, got, per_framework))
+    return hits
+
+
+def _merge_framework_hits(targeted: List[Dict], general: List[Dict]) -> List[Dict]:
+    """Merge targeted hits ahead of general hits, de-duplicated, capped.
+
+    Targeted controls lead because the user asked for that framework by name, and
+    they are interleaved per framework so that naming both S17 and G3 surfaces
+    both rather than filling every slot from whichever corpus scored higher.
+    General hits still fill any remaining slots, so a mixed question
+    ("map S17 to NIST CSF") keeps both sides.
+    """
+    by_framework: Dict[str, List[Dict]] = {}
+    for hit in targeted:
+        fw = (hit.get("metadata") or {}).get("framework", "")
+        by_framework.setdefault(fw, []).append(hit)
+
+    ordered: List[Dict] = []
+    depth = max((len(v) for v in by_framework.values()), default=0)
+    for i in range(depth):
+        for fw in by_framework:
+            if i < len(by_framework[fw]):
+                ordered.append(by_framework[fw][i])
+
+    cap = max(settings.top_k_framework, len(by_framework))
+    merged: List[Dict] = []
+    seen = set()
+    for hit in ordered + list(general):
+        meta = hit.get("metadata") or {}
+        key = (meta.get("framework"), meta.get("control_id"), hit.get("id"))
+        if key in seen:
+            continue
+        seen.add(key)
+        merged.append(hit)
+        if len(merged) >= cap:
+            break
+    return merged
+
+
 def build_context_block(engagement_id: str, query: str) -> str:
     if settings.rag_level == "basic":
         user_hits = vectorstore.query_user_documents(engagement_id, query, settings.top_k_user_doc)
@@ -62,6 +185,14 @@ def build_context_block(engagement_id: str, query: str) -> str:
         )
         user_hits = rerank(query, user_hits, settings.top_k_user_doc)
         framework_hits = rerank(query, framework_hits, settings.top_k_framework)
+
+    # Explicit framework mentions get their own retrieval pass. Without this a
+    # Hong Kong S17 question competes against 12 US/EU corpora for 4 slots and
+    # loses; the targeted hits are merged in ahead of the general ones.
+    targeted = detect_requested_frameworks(query)
+    if targeted:
+        targeted_hits = _query_specific_frameworks(query, targeted)
+        framework_hits = _merge_framework_hits(targeted_hits, framework_hits)
 
     parts = []
     if user_hits:

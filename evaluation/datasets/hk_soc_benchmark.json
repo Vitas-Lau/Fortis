@@ -1,0 +1,390 @@
+[
+  {
+    "id": "HK01",
+    "domain": "IAM",
+    "soc_role": "grc",
+    "sample_file": "training/sample-lab-docs/iam-policy.json",
+    "prompt": "Assess this IAM policy against the Hong Kong DPO Baseline IT Security Policy (S17) and IT Security Guidelines (G3). Cite the exact S17 or G3 clause number for each finding.",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:11.2.6",
+      "S17:11.2.4",
+      "G3:11.2(b)"
+    ],
+    "must_cover_concepts": [
+      "shared user ID",
+      "privilege review",
+      "least privilege"
+    ]
+  },
+  {
+    "id": "HK02",
+    "domain": "IAM",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "Under S17 and G3, how must user access rights be reviewed and what records must be kept?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:11.2.4",
+      "G3:11.2(a)"
+    ],
+    "must_cover_concepts": [
+      "periodically",
+      "review frequency",
+      "records"
+    ]
+  },
+  {
+    "id": "HK03",
+    "domain": "IAM",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What are the Hong Kong government requirements for revoking access rights when staff leave or change role?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:11.2.5",
+      "G3:11.2(c)"
+    ],
+    "must_cover_concepts": [
+      "revoke",
+      "inactivity",
+      "no longer required"
+    ]
+  },
+  {
+    "id": "HK04",
+    "domain": "Password/MFA",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What does G3 require of a password policy, including minimum length and lockout controls?",
+    "expected_frameworks": [
+      "HK_DPO_G3",
+      "HK_DPO_S17"
+    ],
+    "expected_control_ids": [
+      "G3:11.4(b)",
+      "S17:11.4.2"
+    ],
+    "must_cover_concepts": [
+      "eight characters",
+      "password policy",
+      "lockout"
+    ]
+  },
+  {
+    "id": "HK05",
+    "domain": "Password/MFA",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "Are default vendor passwords acceptable under Hong Kong government IT security requirements?",
+    "expected_frameworks": [
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "G3:11.4(d)"
+    ],
+    "must_cover_concepts": [
+      "default",
+      "changed",
+      "vendor"
+    ]
+  },
+  {
+    "id": "HK06",
+    "domain": "Firewall/Gateway",
+    "soc_role": "general",
+    "sample_file": "training/sample-lab-docs/firewall-config.txt",
+    "prompt": "Review this firewall configuration and identify which findings breach Hong Kong DPO S17 or G3 network security requirements, citing the exact clause.",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:15.1.2",
+      "G3:15.1(i)",
+      "G3:15.1(h)"
+    ],
+    "must_cover_concepts": [
+      "properly protected",
+      "network gateway",
+      "firewalls"
+    ]
+  },
+  {
+    "id": "HK07",
+    "domain": "Firewall/Gateway",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What does G3 require of gateway-level protection and Internet security controls?",
+    "expected_frameworks": [
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "G3:15.1(i)",
+      "G3:15.1(h)"
+    ],
+    "must_cover_concepts": [
+      "gateway",
+      "internet",
+      "firewall"
+    ]
+  },
+  {
+    "id": "HK08",
+    "domain": "Logging",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What are the logging and log retention requirements under S17 and G3?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:14.4.1",
+      "G3:14.4(a)"
+    ],
+    "must_cover_concepts": [
+      "retention",
+      "audit",
+      "logging"
+    ]
+  },
+  {
+    "id": "HK09",
+    "domain": "Logging",
+    "soc_role": "cti",
+    "sample_file": "evaluation/simulated_soc_alert.log",
+    "prompt": "Review this SOC alert log and state whether the logging evidence available would satisfy S17 incident evidence retention requirements.",
+    "expected_frameworks": [
+      "HK_DPO_S17"
+    ],
+    "expected_control_ids": [
+      "S17:18.1.2",
+      "S17:14.4.2"
+    ],
+    "must_cover_concepts": [
+      "retained",
+      "incident",
+      "evidence",
+      "logs"
+    ]
+  },
+  {
+    "id": "HK10",
+    "domain": "IncidentReporting",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What must staff do when they observe a suspected security incident under S17 and G3?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:18.1.5",
+      "G3:18.1(b)"
+    ],
+    "must_cover_concepts": [
+      "immediately",
+      "report",
+      "incident"
+    ]
+  },
+  {
+    "id": "HK11",
+    "domain": "IncidentReporting",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "Does Hong Kong government policy require a documented and tested incident response plan? Cite the clause.",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:18.1.3",
+      "G3:18.1(c)"
+    ],
+    "must_cover_concepts": [
+      "response plan",
+      "test",
+      "documented"
+    ]
+  },
+  {
+    "id": "HK12",
+    "domain": "Cloud/ThirdParty",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What are the restrictions on storing classified information in public cloud services under S17?",
+    "expected_frameworks": [
+      "HK_DPO_S17"
+    ],
+    "expected_control_ids": [
+      "S17:17.3.1"
+    ],
+    "must_cover_concepts": [
+      "RESTRICTED",
+      "public cloud",
+      "not be stored"
+    ]
+  },
+  {
+    "id": "HK13",
+    "domain": "Cloud/ThirdParty",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What security requirements must be included in an outsourcing contract with an external service provider?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:17.2.1",
+      "G3:17.1(b)",
+      "G3:17.2(a)"
+    ],
+    "must_cover_concepts": [
+      "service provider",
+      "monitor",
+      "contract",
+      "requirements"
+    ]
+  },
+  {
+    "id": "HK14",
+    "domain": "Backup",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What do S17 and G3 require for backup and restoration of information systems?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:14.3.1",
+      "G3:14.3(a)"
+    ],
+    "must_cover_concepts": [
+      "backup",
+      "regular intervals",
+      "recovery"
+    ]
+  },
+  {
+    "id": "HK15",
+    "domain": "Backup",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "How must backup media be protected, including during offsite transport?",
+    "expected_frameworks": [
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "G3:14.3(b)"
+    ],
+    "must_cover_concepts": [
+      "media",
+      "offsite",
+      "transport",
+      "protect"
+    ]
+  },
+  {
+    "id": "HK16",
+    "domain": "Endpoint/Remote",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What are the Hong Kong government requirements for remote access and home office working?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:11.5.1",
+      "G3:11.5(b)"
+    ],
+    "must_cover_concepts": [
+      "remote access",
+      "home office",
+      "unauthorised access"
+    ]
+  },
+  {
+    "id": "HK17",
+    "domain": "VulnPatch",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What does S17 require for patch management and vulnerability management, and is patching frequency risk-based?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:14.6.1",
+      "S17:14.6.2",
+      "G3:14.6(g)"
+    ],
+    "must_cover_concepts": [
+      "patch",
+      "risk",
+      "vulnerability"
+    ]
+  },
+  {
+    "id": "HK18",
+    "domain": "Governance",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What should a bureau or department IT security policy be based on, and how often must risk assessments be performed?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [
+      "S17:8.1.1",
+      "S17:20.2.1",
+      "G3:8.1(a)"
+    ],
+    "must_cover_concepts": [
+      "baseline",
+      "policy",
+      "two years",
+      "risk assessment"
+    ]
+  },
+  {
+    "id": "HK19",
+    "domain": "Negative/Edge",
+    "soc_role": "general",
+    "sample_file": null,
+    "prompt": "Summarise the key security issues in this firewall configuration.",
+    "expected_frameworks": [],
+    "expected_control_ids": [],
+    "must_cover_concepts": [
+      "firewall"
+    ],
+    "note": "No framework named: routing must stay neutral so existing behaviour is untouched."
+  },
+  {
+    "id": "HK20",
+    "domain": "Negative/Edge",
+    "soc_role": "grc",
+    "sample_file": null,
+    "prompt": "What does S17 clause 99.9 require regarding quantum encryption?",
+    "expected_frameworks": [
+      "HK_DPO_S17",
+      "HK_DPO_G3"
+    ],
+    "expected_control_ids": [],
+    "must_cover_concepts": [],
+    "note": "Non-existent clause: the correct behaviour is to say it does not exist, never to invent its content."
+  }
+]

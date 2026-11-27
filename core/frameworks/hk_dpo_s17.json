@@ -1,0 +1,472 @@
+[
+  {
+    "id": "7.1.1",
+    "title": "IT security organisational framework",
+    "text": "Each bureau/department shall define its IT security organisational framework, together with the roles and responsibilities attached to it.",
+    "category": "Governance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "7.1.2",
+    "title": "Adaptive security protection",
+    "text": "Security protection shall be kept responsive and adaptive as the operating environment and technology change.",
+    "category": "Governance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "8.1.1",
+    "title": "Departmental IT security policy",
+    "text": "Each bureau/department shall promulgate and enforce its own IT security policy, using the Baseline IT Security Policy (S17) as the basis for that policy.",
+    "category": "Governance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "9.1.2",
+    "title": "Security awareness and training",
+    "text": "Information security is the responsibility of every staff member; staff shall receive appropriate awareness training and regular refreshers on the IT security policy.",
+    "category": "Human Resource Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "10.1.1",
+    "title": "Asset inventory",
+    "text": "An inventory of information systems, hardware, software, valid warranties, service agreements and legal or contractual documents shall be owned, kept and maintained.",
+    "category": "Asset Management",
+    "function": "IDENTIFY",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "10.2.1",
+    "title": "Information classification and handling",
+    "text": "Bureau/department shall comply with government requirements on information classification, labelling and handling.",
+    "category": "Asset Management",
+    "function": "IDENTIFY",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "10.3.1",
+    "title": "Storage media control",
+    "text": "The use and transportation of storage media holding classified information shall be managed and controlled.",
+    "category": "Asset Management",
+    "function": "IDENTIFY",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.1.1",
+    "title": "Least privilege",
+    "text": "The least privilege principle shall be enforced when assigning system resources and privileges to users.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.2.1",
+    "title": "Documented access management procedures",
+    "text": "Procedures for approving, granting and managing user access, covering user registration and de-registration, password delivery and password reset, shall be documented.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.2.3",
+    "title": "Restriction of special privileges",
+    "text": "The use of special or privileged access rights shall be restricted and controlled.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.2.4",
+    "title": "Periodic access rights review",
+    "text": "User privileges and data access rights shall be clearly defined and reviewed periodically at a documented frequency, with records of approval and review retained.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.2.5",
+    "title": "Revocation of access rights",
+    "text": "All user privileges and data access rights shall be revoked after a pre-defined period of inactivity or once no longer required; the inactivity period and review frequency shall be documented.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.2.6",
+    "title": "Unique user identity",
+    "text": "Each user identity shall identify exactly one user. Shared or group user IDs are not permitted unless explicitly approved by the DITSO.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.3.1",
+    "title": "User accountability",
+    "text": "Users are responsible for all activity performed under their own user IDs.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.4.1",
+    "title": "Proportionate authentication",
+    "text": "Authentication shall be performed in a manner commensurate with the sensitivity of the information being accessed.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.4.2",
+    "title": "Log-in attempt control",
+    "text": "Consecutive unsuccessful log-in attempts shall be controlled, for example through account lockout or an increasing delay between attempts.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.5.1",
+    "title": "Mobile computing and remote access",
+    "text": "Usage policies and procedures shall specify the security requirements for mobile computing and remote access, and measures shall prevent unauthorised access to or disclosure of information held on those devices. Authorised users shall be briefed on the threats and acknowledge their responsibilities.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "11.6.1",
+    "title": "IoT device security",
+    "text": "Security measures for IoT devices and the data they handle shall be commensurate with the classification of that information.",
+    "category": "Access Control",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "12.1.1",
+    "title": "Cryptographic key management",
+    "text": "Cryptographic keys shall be managed across their whole life cycle, including generation, storage, archiving, retrieval, distribution, retirement and destruction.",
+    "category": "Cryptography",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.1.1",
+    "title": "Least functionality",
+    "text": "Information systems shall be managed on the principle of least functionality, with unnecessary services and components removed or restricted.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.2.1",
+    "title": "Anti-malware protection",
+    "text": "Anti-malware protection shall be enabled on LAN servers, personal computers, mobile devices and any computer connecting to the government internal network over a remote access channel.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.3.1",
+    "title": "Regular backups",
+    "text": "Backups shall be carried out at regular intervals.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.4.1",
+    "title": "Logging policy and retention",
+    "text": "Policies on logging system activity, including the log retention period, shall be defined and documented according to business needs and data classification.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.4.2",
+    "title": "Audit-supporting log content",
+    "text": "Retained logs shall contain enough information to support comprehensive audits of the effectiveness of, and compliance with, security measures.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.6.1",
+    "title": "Vulnerability management process",
+    "text": "Vulnerability management processes shall identify, evaluate, mitigate and track vulnerabilities across information systems.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.6.2",
+    "title": "Risk-based patch management",
+    "text": "A patch management strategy covering patch checking and patching frequency shall be set according to risk, scheduling each patch by its potential impact and likelihood of exploitation.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.7.1",
+    "title": "Threat identification and monitoring",
+    "text": "A threat identification, detection and monitoring mechanism shall be established and regularly reviewed for effectiveness against the nature of the systems and advances in technology.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "14.7.2",
+    "title": "Log review and integrity",
+    "text": "Log records, particularly for systems processing or storing classified information, shall be checked regularly for both completeness and integrity; suspected security-related errors shall be reported and logged.",
+    "category": "Operations Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "15.1.1",
+    "title": "Protection of network information",
+    "text": "Internal network addresses, configurations and related system or network information shall be maintained and shall not be publicly released without the approval of the bureau/department concerned.",
+    "category": "Communications Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "15.1.2",
+    "title": "Protection of network boundaries",
+    "text": "All internal networks connected to other government networks or to publicly accessible networks shall be properly protected.",
+    "category": "Communications Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "15.2.1",
+    "title": "Encrypted transmission of classified information",
+    "text": "Information classified above CONFIDENTIAL shall be transmitted only under encryption and within an isolated LAN approved by the Government Security Officer with the technical endorsement of the DPO.",
+    "category": "Communications Security",
+    "function": "PROTECT",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "17.1.2",
+    "title": "Outsourcing risk assessment",
+    "text": "Where external services or facilities are used, the risks to government data and business operations shall be identified and assessed, and security measures, service levels and management requirements shall be commensurate with the data classification.",
+    "category": "Outsourcing Security",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "17.2.1",
+    "title": "Ongoing monitoring of service providers",
+    "text": "External service providers shall be monitored and reviewed so that their operations are documented and properly managed, and confidentiality and non-disclosure agreements are maintained and reviewed when changes occur.",
+    "category": "Outsourcing Security",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "17.2.2",
+    "title": "Audit rights over service providers",
+    "text": "Audit and compliance monitoring rights shall be reserved so that service providers can be shown to have implemented sufficient controls, or a security audit report shall be obtained instead.",
+    "category": "Outsourcing Security",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "17.2.3",
+    "title": "Data return and destruction on exit",
+    "text": "All government data held by external services or facilities shall be cleared or destroyed to government requirements at service expiry or termination, or on request of the Government.",
+    "category": "Outsourcing Security",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "17.3.1",
+    "title": "Cloud restrictions for classified data",
+    "text": "Information classified RESTRICTED or above shall not be stored in or processed by public cloud services. Before contracting a cloud provider, the shared responsibilities of both parties shall be clearly defined.",
+    "category": "Outsourcing Security",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "18.1.1",
+    "title": "Incident detection and monitoring",
+    "text": "An incident detection and monitoring mechanism shall be established to detect, contain and ultimately prevent security incidents.",
+    "category": "Incident Management",
+    "function": "RESPOND",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "18.1.2",
+    "title": "Incident evidence retention",
+    "text": "System logs and other supporting information shall be retained so that security incidents can be proven and traced.",
+    "category": "Incident Management",
+    "function": "RESPOND",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "18.1.3",
+    "title": "Incident response plan",
+    "text": "A security incident response plan shall be established, documented, tested and maintained for information systems.",
+    "category": "Incident Management",
+    "function": "RESPOND",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "18.1.4",
+    "title": "Staff awareness of the response plan",
+    "text": "Staff shall be made aware of the incident response plan in place and shall observe and follow it.",
+    "category": "Incident Management",
+    "function": "RESPOND",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "18.1.5",
+    "title": "Immediate incident reporting",
+    "text": "Any observed or suspected security incident or problem shall be reported immediately to the responsible party and handled under the incident handling procedure.",
+    "category": "Incident Management",
+    "function": "RESPOND",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "19.1.1",
+    "title": "Disaster recovery planning",
+    "text": "Disaster recovery plans shall be planned, implemented and regularly reviewed so that adequate security measures apply during and after a disruption.",
+    "category": "Business Continuity",
+    "function": "RECOVER",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "19.2.1",
+    "title": "Resilience and availability",
+    "text": "Adequate resilience shall be provided to meet the availability requirements of IT services and facilities.",
+    "category": "Business Continuity",
+    "function": "RECOVER",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "20.1.1",
+    "title": "Statutory and contractual register",
+    "text": "All relevant statutory, regulatory and contractual requirements applicable to each information system shall be identified and documented.",
+    "category": "Compliance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "20.1.4",
+    "title": "Personal Data (Privacy) Ordinance",
+    "text": "The Personal Data (Privacy) Ordinance (Cap. 486) shall be observed when handling personal data, and all personal data should be classified RESTRICTED or above.",
+    "category": "Compliance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "20.2.1",
+    "title": "Biennial risk assessment",
+    "text": "Security risk assessments, and privacy impact assessments where personal data is involved, shall be performed for information systems and production applications at least once every two years.",
+    "category": "Compliance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  },
+  {
+    "id": "20.2.2",
+    "title": "Biennial security audit",
+    "text": "Information systems shall be audited at least once every two years to confirm compliance with IT security policy and effective implementation of security measures, with auditor selection preserving objectivity and impartiality.",
+    "category": "Compliance",
+    "function": "GOVERN",
+    "version": "Hong Kong DPO Baseline IT Security Policy (S17) v8.2, April 2025",
+    "framework": "HK_DPO_S17",
+    "source_url": "https://www.govcert.gov.hk/doc/S17_EN.pdf"
+  }
+]

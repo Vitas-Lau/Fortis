@@ -1,0 +1,16 @@
+{
+  "ran_at": "2026-11-27T06:00:29.721765+00:00",
+  "latency_sec": 54.38,
+  "audit": {
+    "citations_found": 2,
+    "valid_citations": [
+      "G3 7.1(a)",
+      "S17 8.1.1"
+    ],
+    "invalid_citations": [],
+    "mentions_hk_instrument": true,
+    "still_declines_or_hedges": false
+  },
+  "gap_resolved": true,
+  "raw_output": "D:\\SynologyDrive\\LYN\\Project\\COMP3010HK CW2\\Fortis\\evaluation\\raw_outputs\\P01_stage3_hk_verification.md"
+}
